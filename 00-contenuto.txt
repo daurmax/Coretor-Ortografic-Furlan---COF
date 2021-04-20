@@ -1,0 +1,14 @@
+Dati:
+- lemis_cof_2015.txt : 
+  lista dei lemmi con eventuale numero se lemma è omografo
+  formato riga: [lemma] [TAB] [numero o '']
+  codifica UTF-8 CRLF
+
+- peraulis_cof_2015.txt : 
+  lista delle parole con eventuale flag a 1 se la parola può essere preceduta da "l'" e eventuale frequenza normalizzata (1-255)
+  formato riga: [parola] [TAB] ['1' o ''] [TAB] [frequenza o '']
+  codifica UTF-8 CRLF
+
+Sorgenti Coretôr Ortografic Furlan + Plugin per OpenOffice/LibreOffice:
+- COF-2.16.tar.gz
+  NOTA: per ragioni di spazio nel pacchetto non sono inclusi i dati dei dizionari, vanno copiati nella directory 'dict' prelevandoli dalla stessa directory presente nel programma installato.

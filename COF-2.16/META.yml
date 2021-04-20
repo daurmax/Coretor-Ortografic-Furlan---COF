@@ -1,0 +1,82 @@
+---
+abstract: 'Coretôr Ortografic Furlan'
+author:
+  - 'Franz Feregot'
+build_requires: {}
+configure_requires:
+  Module::Build: '0.42'
+dynamic_config: 1
+generated_by: 'Module::Build version 0.4211, CPAN::Meta::Converter version 2.150001'
+license: unknown
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: '1.4'
+name: COF
+provides:
+  COF::AboutDialog:
+    file: lib/COF/AboutDialog.pm
+  COF::App:
+    file: lib/COF/App.pm
+  COF::BaseDisplay:
+    file: lib/COF/BaseDisplay.pm
+  COF::Clipboard:
+    file: lib/COF/Frame.pm
+  COF::Controls:
+    file: lib/COF/Controls.pm
+  COF::Data:
+    file: lib/COF/Data.pm
+  COF::Display:
+    file: lib/COF/Frame.pm
+  COF::ExceptionDict:
+    file: lib/COF/ExceptionDict.pm
+  COF::ExceptionDictBase:
+    file: lib/COF/ExceptionDictBase.pm
+  COF::FastChecker:
+    file: lib/COF/FastChecker.pm
+  COF::FastChecker::Undo:
+    file: lib/COF/FastChecker.pm
+  COF::Frame:
+    file: lib/COF/Frame.pm
+  COF::FrameBase:
+    file: lib/COF/FrameBase.pm
+  COF::Info:
+    file: lib/COF/Info.pm
+    version: '2.16'
+  COF::Letters:
+    file: lib/COF/Letters.pm
+  COF::Personal:
+    file: lib/COF/Personal.pm
+  COF::PersonalBase:
+    file: lib/COF/PersonalBase.pm
+  COF::Progress:
+    file: lib/COF/Frame.pm
+  COF::RT_Checker:
+    file: lib/COF/RT_Checker.pm
+  COF::RadixTree:
+    file: lib/COF/RadixTree.pm
+  COF::RadixTree::RT_Edge:
+    file: lib/COF/RadixTree.pm
+  COF::RadixTree::RT_Node:
+    file: lib/COF/RadixTree.pm
+  COF::SpellChecker:
+    file: lib/COF/SpellChecker.pm
+  COF::SpellChecker::Answer:
+    file: lib/COF/SpellChecker.pm
+  COF::TextDisplay:
+    file: lib/COF/TextDisplay.pm
+  COF::Utils:
+    file: lib/COF/Utils.pm
+  COF::WordIterator:
+    file: lib/COF/WordIterator.pm
+  COF::Working:
+    file: lib/COF/Frame.pm
+requires:
+  Carp::Always: '0.13'
+  File::HomeDir: '1'
+  File::Spec: '0.86'
+  Module::Build: '0.4'
+  Params::Validate: '1.06'
+  Try::Tiny: '0.22'
+  Wx: '0.26'
+  Wx::Perl::ListCtrl: '0'
+version: '2.16'
