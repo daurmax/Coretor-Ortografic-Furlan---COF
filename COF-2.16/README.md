@@ -1,5 +1,11 @@
 # COF - Coretôr Ortografic Furlan
 
+<div align="center">
+  <img src="res/icons/cof128.png" alt="COF Logo" width="128" height="128">
+  <br>
+  <em>Original Friulian Spell Checker</em>
+</div>
+
 ## Overview
 
 **COF** (Coretôr Ortografic Furlan) is the original Friulian spell checker developed by Franz Feregot. This is the reference implementation written in Perl, serving as the authoritative source for the Friulian language spell checking algorithm and dictionary management.
@@ -177,6 +183,10 @@ COF-2.16/
 │   ├── elisions.db    # Elision rules (332KB)
 │   └── errors.db      # Common errors (12KB)
 ├── res/               # Resources (icons, help files)
+│   └── icons/         # Application icons
+│       ├── cof128.ico # Original Windows icon (128x128)
+│       ├── cof128.png # README logo (converted from ICO)
+│       └── [other sizes] # 16x16, 32x32, 48x48 variants
 └── Build.PL           # Build configuration
 ```
 
@@ -186,7 +196,8 @@ COF-2.16/
 │   └── test_phonetic_perl.pl  # Phonetic algorithm tests (47 cases)
 ├── AGENTS.md          # Contribution guidelines (added)
 ├── .gitattributes     # Git LFS configuration (added)
-└── README.md          # This documentation (added)
+├── README.md          # This documentation (added)
+└── res/icons/cof128.png # Project logo for README (converted from ICO)
 ```
 
 ### Dictionary Files (Git LFS)
