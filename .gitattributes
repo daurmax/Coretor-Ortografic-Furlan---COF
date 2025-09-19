@@ -1,0 +1,2 @@
+COF-2.16/dict/*.db filter=lfs diff=lfs merge=lfs -text
+COF-2.16/dict/*.rt filter=lfs diff=lfs merge=lfs -text
