@@ -89,6 +89,33 @@ BREAKING CHANGE: phonetic algorithm API changed from get_hash() to get_phonetic_
 - **Regression testing**: Prevent breaking existing functionality
 - **Documentation**: Update test documentation with new test cases
 
+### Support Utilities and Test Infrastructure
+- **Utility Scripts**: When test support functions are needed, search in `util/` directory first
+- **Existing Tools**: Use existing utilities like `spellchecker_utils.pl`, `encoding_utils.pl` for common tasks
+- **New Utilities**: If required functionality doesn't exist, add to appropriate file in `util/` or create new utility file
+- **Logical Organization**: Group utilities by scope using the `_utils` convention:
+  * `spellchecker_utils.pl` - SpellChecker suggestion extraction and utilities
+  * `radixtree_utils.pl` - RadixTree suggestion extraction and utilities  
+  * `encoding_utils.pl` - Character encoding and UTF-8 diagnostics
+  * `validation_utils.pl` - General validation and testing utilities (future)
+- **Temporary Output**: All temporary files and test outputs must go in `temp/` directory (git-ignored)
+- **Clean Structure**: Keep `tests/` directory clean with only actual test files
+
+**Utility Usage Examples**
+
+To inspect encoding and suggestions quickly from the command line:
+
+```
+perl util/encoding_utils.pl --suggest cjupe
+perl util/encoding_utils.pl --word 'þope'
+perl util/encoding_utils.pl --file sample_words.txt --nohex
+
+perl util/spellchecker_utils.pl cjupe        # default list output
+perl util/spellchecker_utils.pl cjupe array  # print as qw(...) for tests
+```
+
+These examples show how to call utilities in `util/` to extract static expected values for tests or diagnose encoding issues.
+
 ### AI Agent Considerations
 - **Context preservation**: Maintain understanding of repository's historical significance
 - **Careful modifications**: Prefer additive changes over modifications

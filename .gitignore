@@ -1,0 +1,39 @@
+# Temporary files and build artifacts
+*.tmp
+*.temp
+*.log
+*.bak
+*~
+
+# Temporary output files
+temp/
+
+# Perl build files
+Makefile
+Makefile.old
+Build
+Build.bat
+_build/
+cover_db/
+blib/
+inc/
+.lwpcookies
+.last_cover_stats
+nytprof.out
+pod2htm*.tmp
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
