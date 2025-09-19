@@ -31,7 +31,8 @@ This repository represents version **2.16** of COF, built on **20110620** with l
 **Files added for testing and documentation**:
 - `README.md` - This documentation
 - `tests/test_phonetic_perl.pl` - Phonetic algorithm test suite (47 test cases)
-- `.gitignore` - Git ignore patterns (if present)
+- `AGENTS.md` - Contribution guidelines for developers and AI agents
+- `.gitattributes` - Git LFS configuration for dictionary files
 
 ## Architecture
 
@@ -82,11 +83,20 @@ Output: ("A75ç7", "E775ç7")
 - **Edit Distance**: Levenshtein distance with Friulian-specific costs
 - **Frequency Ranking**: Prioritizes common words in suggestions
 
-## Installation & Testing on Windows
+## Installation & Setup on Windows
 
 ### Prerequisites
 
-Install **Strawberry Perl** using Chocolatey:
+**1. Install Git LFS** (required for dictionary files):
+```powershell
+# Git LFS is included with modern Git installations
+# Verify installation
+git lfs version
+
+# If not installed, download from: https://git-lfs.github.io/
+```
+
+**2. Install Strawberry Perl** using Chocolatey:
 
 ```powershell
 # Install Chocolatey if not already installed
@@ -115,6 +125,16 @@ cpan install Wx
 cpan install Wx::Perl::ListCtrl
 cpan install Try::Tiny
 cpan install Carp::Always
+```
+
+### Clone Repository with LFS
+
+```powershell
+# Clone repository and download LFS files
+git clone https://github.com/daurmax/COF.git
+cd COF/COF-2.16
+git lfs install
+git lfs pull
 ```
 
 ### Build and Run
@@ -150,17 +170,34 @@ COF-2.16/
 │   ├── cof.pl         # GUI launcher
 │   └── cof_oo_cli.pl  # Command-line interface
 ├── COFOOPlugin/       # OpenOffice.org integration plugin
-├── dict/              # Dictionary files
+├── dict/              # Dictionary files (📦 Git LFS)
+│   ├── words.db       # Main Friulian dictionary (627MB)
+│   ├── words.rt       # RadixTree index (30MB)
+│   ├── frec.db        # Frequency dictionary (2.6MB)
+│   ├── elisions.db    # Elision rules (332KB)
+│   └── errors.db      # Common errors (12KB)
 ├── res/               # Resources (icons, help files)
 └── Build.PL           # Build configuration
 ```
 
-### Testing Additions (this branch)
+### Development Additions (this branch)
 ```
 ├── tests/             # Test suites (added)
 │   └── test_phonetic_perl.pl  # Phonetic algorithm tests (47 cases)
+├── AGENTS.md          # Contribution guidelines (added)
+├── .gitattributes     # Git LFS configuration (added)
 └── README.md          # This documentation (added)
 ```
+
+### Dictionary Files (Git LFS)
+The `dict/` folder contains the essential Friulian dictionaries required for COF operation:
+- **words.db** (627MB): Main vocabulary database with ~600K words
+- **words.rt** (30MB): RadixTree index for fast prefix matching
+- **frec.db** (2.6MB): Word frequency statistics for ranking suggestions
+- **elisions.db** (332KB): Elision and contraction rules
+- **errors.db** (12KB): Common spelling error patterns
+
+> 📦 **Note**: Dictionary files are stored using **Git LFS** (Large File Storage) due to their size. Ensure Git LFS is installed when cloning: `git lfs install && git lfs pull`
 
 ## Testing the Phonetic Algorithm
 
