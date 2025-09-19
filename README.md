@@ -1,7 +1,7 @@
 # COF - Coretôr Ortografic Furlan
 
 <div align="center">
-  <img src="res/icons/cof128.png" alt="COF Logo" width="128" height="128">
+  <img src="COF-2.16/res/icons/cof128.png" alt="COF Logo" width="128" height="128">
   <br>
   <em>Original Friulian Spell Checker</em>
 </div>
@@ -31,7 +31,7 @@ This repository represents version **2.16** of COF, built on **20110620** with l
 - GUI and CLI scripts: `script/cof.pl`, `script/cof_oo_cli.pl`
 - OpenOffice plugin in `COFOOPlugin/`
 - Resources and icons in `res/`
-- Dictionary files in `dict/`
+- Dictionary files in `COF-2.16/dict/`
 - Build configuration files
 
 **Files added for testing and documentation**:
@@ -201,7 +201,7 @@ COF-2.16/
 ```
 
 ### Dictionary Files (Git LFS)
-The `dict/` folder contains the essential Friulian dictionaries required for COF operation:
+The `COF-2.16/dict/` folder contains the essential Friulian dictionaries required for COF operation:
 - **words.db** (627MB): Main vocabulary database with ~600K words
 - **words.rt** (30MB): RadixTree index for fast prefix matching
 - **frec.db** (2.6MB): Word frequency statistics for ranking suggestions
