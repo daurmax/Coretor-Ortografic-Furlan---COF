@@ -12,7 +12,10 @@ The CI pipeline runs on two platforms:
 
 ### 1. Environment Setup
 - Checkout code with Git LFS support (for dictionary files)
-- Install Perl 5.34 using `shogo82148/actions-setup-perl`
+- Install Perl with fallback strategies:
+  - Primary: `shogo82148/actions-setup-perl@v1.31.3` (Ubuntu/Windows)
+  - Fallback Ubuntu: System Perl + cpanminus via apt-get
+  - Fallback Windows: Strawberry Perl via Chocolatey
 - Install required system dependencies
 - Install Perl module dependencies
 
@@ -116,6 +119,12 @@ perl util/encoding_utils.pl --suggest cjupe
 5. **Missing dict/empty file**
    - Pipeline creates this placeholder file automatically
    - Required by original MANIFEST for build compatibility
+
+6. **Perl setup action failure**
+   - Pipeline has automatic fallbacks for Perl installation
+   - Ubuntu: Falls back to system Perl via apt-get
+   - Windows: Falls back to Chocolatey Strawberry Perl installation
+   - Usually resolves automatically without intervention
 
 ### Modifying the Pipeline
 
