@@ -10,6 +10,14 @@
 
 This repository represents version **2.16** of COF, built on **20110620** with lemmas version **20150417**. The software includes both a graphical user interface and command-line tools for Friulian spell checking.
 
+### Branch Structure
+
+- **`master`**: Main branch with original COF source code + accepted changes from develop (🔒 **protected** - requires pull requests for merges)
+- **`original`**: Pure original source with preservation notice (🔒 **locked** - completely read-only, historical reference)
+- **`develop`**: Active development branch for new features and improvements (🔓 **open for development**)
+
+> **Note**: The `original` branch contains only the unmodified original COF code and is completely locked for historical preservation. The `master` branch evolves by accepting vetted changes from `develop` through pull requests. All active development work should be done in the `develop` branch.
+
 ### Repository Structure
 
 **Original files** (from initial commit 01ad001, April 20, 2021):
@@ -185,13 +193,18 @@ This codebase serves as the reference implementation for:
 
 ## Contributing
 
-**This repository is read-only and should not be modified.** 
+**The original source code (`master` and `original` branches) should not be modified.**
 
-For improvements or new features:
-1. Fork this repository for reference
-2. Create derivative projects (e.g., Python, C#, JavaScript ports)
-3. Maintain compatibility with the original `phalg_furlan` algorithm
-4. Use the test suite to validate implementations
+### Branch Protection Status:
+- 🔒 **`master`**: Protected - requires pull requests for merges, evolves with accepted changes from develop
+- 🔒 **`original`**: Completely locked - read-only, preserves pure original COF source code
+- 🔓 **`develop`**: Open for active development work
+
+### Development Workflow:
+1. **Active development**: Work directly in `develop` branch or create feature branches from `develop`
+2. **Contributing to master**: Create pull requests from `develop` to `master` (protection rules apply)
+3. **Derivative projects**: Fork this repository for new implementations (e.g., Python, JavaScript ports)
+4. **Algorithm validation**: Maintain compatibility with original `phalg_furlan` and use the test suite
 
 ## License
 
