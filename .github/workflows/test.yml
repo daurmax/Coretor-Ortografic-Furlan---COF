@@ -24,7 +24,7 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y libdb-dev
+        sudo apt-get install -y libdb-dev libgdbm-dev
     
     - name: Install Perl dependencies
       run: |
@@ -37,8 +37,11 @@ jobs:
         cpanm --notest Getopt::Long
         cpanm --notest JSON::PP
         cpanm --notest Pod::Usage
-        # Skip Wx dependency for headless testing
         cpanm --notest File::Spec
+        # Critical database dependencies
+        cpanm --notest DB_File
+        cpanm --notest GDBM_File
+        # Skip Wx dependency for headless testing
     
     - name: Build project
       run: |
@@ -89,6 +92,8 @@ jobs:
         cpanm --notest JSON::PP
         cpanm --notest Pod::Usage
         cpanm --notest File::Spec
+        # Critical database dependencies - included in Strawberry Perl
+        cpanm --notest DB_File
       shell: powershell
     
     - name: Build project

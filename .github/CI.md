@@ -45,6 +45,8 @@ The CI pipeline runs on two platforms:
 - `JSON::PP` - JSON processing
 - `Pod::Usage` - Documentation extraction
 - `File::Spec` - Cross-platform file operations
+- `DB_File` - Berkeley DB interface (critical for dictionary access)
+- `GDBM_File` - GDBM database interface
 
 ### Optional Dependencies
 - `Wx` and `Wx::Perl::ListCtrl` - GUI components (skipped in CI)
@@ -105,6 +107,15 @@ perl util/encoding_utils.pl --suggest cjupe
 3. **Perl version incompatibility**
    - Pipeline uses Perl 5.34 for consistency
    - Ensure local environment matches for reliable results
+
+4. **DB_File module missing**
+   - Install system dependencies: `sudo apt-get install libdb-dev libgdbm-dev`
+   - Install Perl module: `cpanm DB_File`
+   - Critical for accessing dictionary database files
+
+5. **Missing dict/empty file**
+   - Pipeline creates this placeholder file automatically
+   - Required by original MANIFEST for build compatibility
 
 ### Modifying the Pipeline
 
