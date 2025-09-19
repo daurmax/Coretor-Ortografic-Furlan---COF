@@ -18,11 +18,11 @@ my $format = 'list';  # list | array | json
 my $list_only = 0;
 
 GetOptions(
-	'help|h'   => \$help,
-	'word|w=s' => \$word,
-	'file|f=s' => \$from_file,
-	'format=s' => \$format,
-	'list'     => \$list_only,
+    'help|h'   => \$help,
+    'word|w=s' => \$word,
+    'file|f=s' => \$from_file,
+    'format=s' => \$format,
+    'list'     => \$list_only,
 ) or die "Invalid options\n";
 
 if ($help) { print "Usage: $0 --word WORD | --file FILE [--format list|array|json] \n"; exit 0 }
