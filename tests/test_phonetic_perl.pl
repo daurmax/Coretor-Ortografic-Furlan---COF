@@ -116,7 +116,7 @@ Tests validate the correctness of the Perl implementation using extracted COF re
 
     perl test_phonetic_perl.pl
 
-Run from the COF-2.16/tests/ directory. Tests the phonetic algorithm implementation
+Run from the tests/ directory. Tests the phonetic algorithm implementation
 without requiring dictionary database files.
 
 =cut

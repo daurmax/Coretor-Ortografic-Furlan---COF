@@ -1,0 +1,3 @@
+# Empty placeholder file for original COF distribution structure
+# This file maintains compatibility with the original COF v2.16 MANIFEST
+# The actual dictionary files are now included: words.db, words.rt, frec.db, elisions.db, errors.db

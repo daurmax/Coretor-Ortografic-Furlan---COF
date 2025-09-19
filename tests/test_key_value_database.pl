@@ -202,7 +202,7 @@ Tests validate database connectivity and lookup functionality.
 
     perl test_key_value_database.pl
 
-Run from the COF-2.16/tests/ directory. Requires the Friulian dictionary
+Run from the tests/ directory. Requires the Friulian dictionary
 database files to be present in ../dict/
 
 =cut

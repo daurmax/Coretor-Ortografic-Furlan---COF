@@ -1,7 +1,7 @@
 # COF - Coretôr Ortografic Furlan
 
 <div align="center">
-  <img src="COF-2.16/res/icons/cof128.png" alt="COF Logo" width="128" height="128">
+  <img src="res/icons/cof128.png" alt="COF Logo" width="128" height="128">
   <br>
   <em>Original Friulian Spell Checker</em>
 </div>
@@ -42,6 +42,7 @@ This repository preserves Franz Feregot's original COF implementation with moder
 - Comprehensive test suite with 76 validation cases
 - Documentation and contribution guidelines
 - Repository modernization and GitHub integration
+- Continuous Integration with automated testing on every commit
 
 ## Architecture
 
@@ -125,7 +126,7 @@ refreshenv
 
 ```powershell
 # Navigate to COF directory
-cd "path\to\COF\COF-2.16"
+cd "path\to\COF"
 
 # Install required Perl modules
 cpan install Params::Validate
@@ -141,7 +142,7 @@ cpan install Carp::Always
 ```powershell
 # Clone repository and download LFS files
 git clone https://github.com/daurmax/COF.git
-cd COF/COF-2.16
+cd COF
 git lfs install
 git lfs pull
 ```
@@ -166,10 +167,9 @@ perl script/cof_oo_cli.pl
 ## Repository Structure
 
 ### Original COF Implementation
-Franz Feregot's complete COF v2.16 source code (preserved in `original` branch):
+Franz Feregot's complete COF v2.16 source code (preserved in `original` branch and flattened to repository root):
 
 ```
-COF-2.16/
 ├── lib/COF/                    # Core Perl modules (16 files)
 │   ├── Data.pm                 # Dictionary management & phonetic algorithm
 │   ├── SpellChecker.pm         # Main spell checking logic
@@ -200,43 +200,43 @@ COF-2.16/
 └── cof.bat                     # Windows launcher script
 ```
 
-**Additional files in original:**
-- `00-contenuto.txt` - Content description
-- `lemis_cof_2015.txt` - Word lemmas
-- `peraulis_cof_2015.txt` - Vocabulary list
-
 ### Enhanced Repository (current branch)
-Modern additions while preserving original structure:
+Modern additions while preserving original structure in flat hierarchy:
 
 ```
 ├── README.md                   # This documentation
 ├── CHANGELOG.md                # Version history based on Git tags
-├── AGENTS.md                   # Contribution guidelines
+├── AGENTS.md                   # Contribution guidelines  
 ├── .gitattributes              # Git LFS configuration
-└── COF-2.16/
-    ├── [all original files]    # Preserved unchanged
-    ├── dict/                   # Enhanced dictionary folder
-    │   ├── empty               # Original placeholder (preserved)
-    │   ├── words.db            # Main dictionary (627MB) [Git LFS]
-    │   ├── words.rt            # RadixTree index (30MB) [Git LFS]
-    │   ├── frec.db             # Frequency data (2.6MB) [Git LFS]
-    │   ├── elisions.db         # Elision rules (332KB) [Git LFS]
-    │   └── errors.db           # Error patterns (12KB) [Git LFS]
-    ├── res/icons/
-    │   ├── [original .ico files] # Preserved unchanged
-    │   └── cof128.png          # Converted logo for README
-    ├── tests/                    # Test suite (76 total tests)
-    │   ├── test_phonetic_perl.pl # Phonetic algorithm validation (47 tests)
-    │   ├── test_radix_tree.pl    # RadixTree functionality (9 tests)
-    │   ├── test_spell_checker.pl # SpellChecker validation (5 tests) 
-    │   ├── test_key_value_database.pl # Database lookups (15 tests)
-    │   └── run_all_tests.pl      # Integrated test runner
-    ├── util/                     # Support utilities
-    │   ├── get_suggestions.pl    # Extract spell checker suggestions
-    │   ├── get_rt_suggestions.pl # Extract RadixTree suggestions
-    │   ├── debug_encoding.pl     # UTF-8 encoding diagnostics
-    │   └── get_suggestions_array.pl # Array format suggestion output
-    └── temp/                     # Temporary output files (ignored by git)
+├── .github/                    # GitHub integration
+│   └── copilot-instructions.md # AI assistance guidelines
+├── [original files]            # All COF-2.16 files at root level
+├── dict/                       # Enhanced dictionary folder
+│   ├── empty                   # Original placeholder (preserved)
+│   ├── words.db                # Main dictionary (627MB) [Git LFS]
+│   ├── words.rt                # RadixTree index (30MB) [Git LFS]
+│   ├── frec.db                 # Frequency data (2.6MB) [Git LFS]
+│   ├── elisions.db             # Elision rules (332KB) [Git LFS]
+│   └── errors.db               # Error patterns (12KB) [Git LFS]
+├── res/icons/
+│   ├── [original .ico files]   # Preserved unchanged
+│   └── cof128.png              # Converted logo for README
+├── tests/                      # Test suite (76 total tests)
+│   ├── test_phonetic_perl.pl   # Phonetic algorithm validation (47 tests)
+│   ├── test_radix_tree.pl      # RadixTree functionality (9 tests)
+│   ├── test_spell_checker.pl   # SpellChecker validation (5 tests) 
+│   ├── test_key_value_database.pl # Database lookups (15 tests)
+│   └── run_all_tests.pl        # Integrated test runner
+├── util/                       # Support utilities (parameterized)
+│   ├── spellchecker_utils.pl   # SpellChecker suggestions with CLI options
+│   ├── radixtree_utils.pl      # RadixTree suggestions with CLI options
+│   ├── encoding_utils.pl       # UTF-8 encoding diagnostics with CLI
+│   └── README.md               # Utility documentation and usage examples
+├── legacy/                     # Historical reference files
+│   ├── 00-contenuto.txt        # Original content description
+│   ├── lemis_cof_2015.txt      # Historical word lemmas (24,266 entries)
+│   └── peraulis_cof_2015.txt   # Historical vocabulary list (1M+ words)
+└── temp/                       # Temporary output files (ignored by git)
 ```
 
 ### Dictionary Database
@@ -288,7 +288,7 @@ The enhanced repository includes comprehensive test coverage to validate the COF
 
 ```bash
 # Run individual test suites:
-cd COF-2.16/tests
+cd tests
 perl test_radix_tree.pl       # RadixTree/RT_Checker functionality (8 tests)
 perl test_spell_checker.pl    # SpellChecker word validation (5 tests)  
 perl test_key_value_database.pl # Database lookups (8 tests)
