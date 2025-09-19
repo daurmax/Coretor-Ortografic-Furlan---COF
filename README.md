@@ -31,13 +31,16 @@ This repository represents version **2.16** of COF, built on **20110620** with l
 - GUI and CLI scripts: `script/cof.pl`, `script/cof_oo_cli.pl`
 - OpenOffice plugin in `COFOOPlugin/`
 - Resources and icons in `res/`
-- Dictionary files in `COF-2.16/dict/`
+- Dictionary placeholder in `COF-2.16/dict/` (originally only `empty` file)
 - Build configuration files
 
-**Files added for testing and documentation**:
-- `README.md` - This documentation
-- `tests/test_phonetic_perl.pl` - Phonetic algorithm test suite (47 test cases)
+**🆕 Enhanced features added (v2.17)**:
+- `README.md` - This comprehensive documentation
+- `COF-2.16/dict/*.db` - Complete Friulian dictionary set (630MB, Git LFS)
+- `COF-2.16/res/icons/cof128.png` - Project logo converted from original ICO
+- `COF-2.16/tests/test_phonetic_perl.pl` - Phonetic algorithm test suite (47 test cases)
 - `AGENTS.md` - Contribution guidelines for developers and AI agents
+- `.gitattributes` - Git LFS configuration for large dictionary files
 - `.gitattributes` - Git LFS configuration for dictionary files
 
 ## Architecture
@@ -176,17 +179,18 @@ COF-2.16/
 │   ├── cof.pl         # GUI launcher
 │   └── cof_oo_cli.pl  # Command-line interface
 ├── COFOOPlugin/       # OpenOffice.org integration plugin
-├── dict/              # Dictionary files (📦 Git LFS)
-│   ├── words.db       # Main Friulian dictionary (627MB)
-│   ├── words.rt       # RadixTree index (30MB)
-│   ├── frec.db        # Frequency dictionary (2.6MB)
-│   ├── elisions.db    # Elision rules (332KB)
-│   └── errors.db      # Common errors (12KB)
+├── dict/              # Originally empty (📦 Now with Git LFS dictionaries)
+│   ├── empty          # Original placeholder file
+│   ├── words.db       # 🆕 Main Friulian dictionary (627MB)
+│   ├── words.rt       # 🆕 RadixTree index (30MB)
+│   ├── frec.db        # 🆕 Frequency dictionary (2.6MB)
+│   ├── elisions.db    # 🆕 Elision rules (332KB)
+│   └── errors.db      # 🆕 Common errors (12KB)
 ├── res/               # Resources (icons, help files)
 │   └── icons/         # Application icons
 │       ├── cof128.ico # Original Windows icon (128x128)
-│       ├── cof128.png # README logo (converted from ICO)
-│       └── [other sizes] # 16x16, 32x32, 48x48 variants
+│       ├── cof128.png # 🆕 README logo (converted from ICO)
+│       └── [other sizes] # 16x16, 32x32, 48x48 variants (.ico format)
 └── Build.PL           # Build configuration
 ```
 
@@ -201,7 +205,12 @@ COF-2.16/
 ```
 
 ### Dictionary Files (Git LFS)
-The `COF-2.16/dict/` folder contains the essential Friulian dictionaries required for COF operation:
+The `COF-2.16/dict/` folder originally contained only an `empty` placeholder file. **We have added** the essential Friulian dictionaries required for COF operation:
+
+**🔹 Original Files:**
+- **empty**: Placeholder file in original COF distribution
+
+**🆕 Added Dictionary Files (Git LFS):**
 - **words.db** (627MB): Main vocabulary database with ~600K words
 - **words.rt** (30MB): RadixTree index for fast prefix matching
 - **frec.db** (2.6MB): Word frequency statistics for ranking suggestions
