@@ -1,0 +1,2 @@
+dict/*.db filter=lfs diff=lfs merge=lfs -text
+dict/*.rt filter=lfs diff=lfs merge=lfs -text
