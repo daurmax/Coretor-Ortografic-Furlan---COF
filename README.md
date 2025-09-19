@@ -26,22 +26,22 @@ This repository represents version **2.16** of COF, built on **20110620** with l
 
 ### Repository Structure
 
-**Original files** (from initial commit 01ad001, April 20, 2021):
-- Core Perl modules in `lib/COF/`
-- GUI and CLI scripts: `script/cof.pl`, `script/cof_oo_cli.pl`
-- OpenOffice plugin in `COFOOPlugin/`
-- Resources and icons in `res/`
-- Dictionary placeholder in `COF-2.16/dict/` (originally only `empty` file)
-- Build configuration files
+This repository preserves Franz Feregot's original COF implementation with modern enhancements. See `CHANGELOG.md` for detailed version history.
 
-**🆕 Enhanced features added (v2.17)**:
-- `README.md` - This comprehensive documentation
-- `COF-2.16/dict/*.db` - Complete Friulian dictionary set (630MB, Git LFS)
-- `COF-2.16/res/icons/cof128.png` - Project logo converted from original ICO
-- `COF-2.16/tests/test_phonetic_perl.pl` - Phonetic algorithm test suite (47 test cases)
-- `AGENTS.md` - Contribution guidelines for developers and AI agents
-- `.gitattributes` - Git LFS configuration for large dictionary files
-- `.gitattributes` - Git LFS configuration for dictionary files
+**Original Structure** (preserved in `original` branch):
+- Complete Perl implementation in `COF-2.16/`
+- Core spell checking modules in `lib/COF/`
+- GUI and CLI executables in `script/`
+- OpenOffice.org plugin integration
+- Resource files and original icons
+- Empty dictionary placeholder (`dict/empty`)
+- Build configuration and metadata
+
+**Enhancements Added**:
+- Complete Friulian dictionary database with Git LFS
+- Comprehensive test suite with 47 validation cases
+- Documentation and contribution guidelines
+- Repository modernization and GitHub integration
 
 ## Architecture
 
@@ -163,61 +163,82 @@ perl script/cof.pl
 perl script/cof_oo_cli.pl
 ```
 
-## File Structure
+## Repository Structure
 
-### Original Structure (from initial commit)
+### Original COF Implementation
+Franz Feregot's complete COF v2.16 source code (preserved in `original` branch):
+
 ```
 COF-2.16/
-├── lib/COF/           # Core Perl modules (original)
-│   ├── Data.pm        # Dictionary management & phonetic algorithm
-│   ├── SpellChecker.pm # Main spell checking logic
-│   ├── FastChecker.pm  # Text processing engine
-│   ├── RadixTree.pm    # Dictionary storage structure
-│   ├── App.pm          # GUI application
-│   └── [12 other modules]
-├── script/            # Original executable scripts
-│   ├── cof.pl         # GUI launcher
-│   └── cof_oo_cli.pl  # Command-line interface
-├── COFOOPlugin/       # OpenOffice.org integration plugin
-├── dict/              # Originally empty (📦 Now with Git LFS dictionaries)
-│   ├── empty          # Original placeholder file
-│   ├── words.db       # 🆕 Main Friulian dictionary (627MB)
-│   ├── words.rt       # 🆕 RadixTree index (30MB)
-│   ├── frec.db        # 🆕 Frequency dictionary (2.6MB)
-│   ├── elisions.db    # 🆕 Elision rules (332KB)
-│   └── errors.db      # 🆕 Common errors (12KB)
-├── res/               # Resources (icons, help files)
-│   └── icons/         # Application icons
-│       ├── cof128.ico # Original Windows icon (128x128)
-│       ├── cof128.png # 🆕 README logo (converted from ICO)
-│       └── [other sizes] # 16x16, 32x32, 48x48 variants (.ico format)
-└── Build.PL           # Build configuration
+├── lib/COF/                    # Core Perl modules (16 files)
+│   ├── Data.pm                 # Dictionary management & phonetic algorithm
+│   ├── SpellChecker.pm         # Main spell checking logic
+│   ├── FastChecker.pm          # Text processing engine
+│   ├── RadixTree.pm            # Dictionary storage structure
+│   ├── App.pm                  # GUI application framework
+│   ├── Frame.pm, FrameBase.pm  # GUI window management
+│   ├── TextDisplay.pm          # Text editing components
+│   ├── Personal.pm             # User dictionary management
+│   └── [7 additional modules]  # Complete implementation
+├── script/                     # Executable scripts
+│   ├── cof.pl                  # GUI application launcher
+│   └── cof_oo_cli.pl           # Command-line interface
+├── COFOOPlugin/                # OpenOffice.org integration
+│   ├── cof/oo/                 # Java plugin classes
+│   └── [plugin configuration]
+├── res/                        # Resources and assets
+│   ├── icons/                  # Application icons (.ico format)
+│   │   ├── cof128.ico, cof32.ico, cof16.ico
+│   │   └── [additional icon variants]
+│   ├── Istruzions.chm         # Help documentation
+│   └── dr.bmp, dv.bmp         # UI graphics
+├── dict/
+│   └── empty                   # Placeholder file (dictionaries not included)
+├── Build.PL                    # Perl build configuration
+├── MANIFEST                    # File manifest
+├── META.json, META.yml         # Package metadata
+└── cof.bat                     # Windows launcher script
 ```
 
-### Development Additions (this branch)
+**Additional files in original:**
+- `00-contenuto.txt` - Content description
+- `lemis_cof_2015.txt` - Word lemmas
+- `peraulis_cof_2015.txt` - Vocabulary list
+
+### Enhanced Repository (current branch)
+Modern additions while preserving original structure:
+
 ```
-├── tests/             # Test suites (added)
-│   └── test_phonetic_perl.pl  # Phonetic algorithm tests (47 cases)
-├── AGENTS.md          # Contribution guidelines (added)
-├── .gitattributes     # Git LFS configuration (added)
-├── README.md          # This documentation (added)
-└── res/icons/cof128.png # Project logo for README (converted from ICO)
+├── README.md                   # This documentation
+├── CHANGELOG.md                # Version history based on Git tags
+├── AGENTS.md                   # Contribution guidelines
+├── .gitattributes              # Git LFS configuration
+└── COF-2.16/
+    ├── [all original files]    # Preserved unchanged
+    ├── dict/                   # Enhanced dictionary folder
+    │   ├── empty               # Original placeholder (preserved)
+    │   ├── words.db            # Main dictionary (627MB) [Git LFS]
+    │   ├── words.rt            # RadixTree index (30MB) [Git LFS]
+    │   ├── frec.db             # Frequency data (2.6MB) [Git LFS]
+    │   ├── elisions.db         # Elision rules (332KB) [Git LFS]
+    │   └── errors.db           # Error patterns (12KB) [Git LFS]
+    ├── res/icons/
+    │   ├── [original .ico files] # Preserved unchanged
+    │   └── cof128.png          # Converted logo for README
+    └── tests/
+        └── test_phonetic_perl.pl # Algorithm validation (47 test cases)
 ```
 
-### Dictionary Files (Git LFS)
-The `COF-2.16/dict/` folder originally contained only an `empty` placeholder file. **We have added** the essential Friulian dictionaries required for COF operation:
+### Dictionary Database
+The original COF distribution included only an `empty` placeholder in `dict/`. This enhanced repository provides the complete Friulian dictionary set (630MB total) managed via Git LFS:
 
-**🔹 Original Files:**
-- **empty**: Placeholder file in original COF distribution
-
-**🆕 Added Dictionary Files (Git LFS):**
-- **words.db** (627MB): Main vocabulary database with ~600K words
-- **words.rt** (30MB): RadixTree index for fast prefix matching
-- **frec.db** (2.6MB): Word frequency statistics for ranking suggestions
+- **words.db** (627MB): Main vocabulary database (~600K words)
+- **words.rt** (30MB): RadixTree index for fast prefix matching  
+- **frec.db** (2.6MB): Word frequency statistics for suggestion ranking
 - **elisions.db** (332KB): Elision and contraction rules
 - **errors.db** (12KB): Common spelling error patterns
 
-> 📦 **Note**: Dictionary files are stored using **Git LFS** (Large File Storage) due to their size. Ensure Git LFS is installed when cloning: `git lfs install && git lfs pull`
+> 📦 **Git LFS Required**: Dictionary files use Git Large File Storage. Install with: `git lfs install && git lfs pull`
 
 ## Testing the Phonetic Algorithm
 
