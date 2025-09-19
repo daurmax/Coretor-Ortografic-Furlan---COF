@@ -84,7 +84,7 @@ Tests validate the correctness of the Perl implementation.
 
     perl test_spell_checker.pl
 
-Run from the COF-2.16/tests/ directory. Requires the Friulian dictionary
+Run from the tests/ directory. Requires the Friulian dictionary
 database files to be present in ../dict/
 
 =cut

@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.21] - 2025-09-19
+
+### Changed
+- **Repository Structure Flattening**: Eliminated nested `COF-2.16/` directory structure
+  - All original files moved to repository root for cleaner organization
+  - Legacy files (2015 lemma and vocabulary data) organized in `legacy/` directory  
+  - Updated all current path references in documentation while preserving historical descriptions
+  - Preserved full functionality with simplified directory hierarchy
+
+### Added
+- **Continuous Integration**: GitHub Actions pipeline for automated testing
+  - Test suite execution on every commit and pull request
+  - Cross-platform testing (Ubuntu and Windows)
+  - Automatic Perl environment setup and dependency installation
+  - Utility script validation as part of CI process
+
+### Fixed
+- **Historical Documentation Preservation**: Enhanced guidelines to prevent modification of historical entries
+  - Added explicit rules in `AGENTS.md` about preserving historical changelog entries and original structure descriptions
+  - Updated `.github/copilot-instructions.md` with warnings about historical integrity
+  - Corrected approach to only update current operational paths, not historical documentation
+
 ## [v2.20] - 2025-09-19
 
 ### Added

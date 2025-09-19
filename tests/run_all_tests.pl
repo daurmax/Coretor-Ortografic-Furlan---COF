@@ -21,7 +21,7 @@ Total test coverage: 76 tests validating complete COF functionality.
 
     perl run_all_tests.pl
 
-Run from the COF-2.16/tests/ directory. Requires the Friulian dictionary
+Run from the tests/ directory. Requires the Friulian dictionary
 database files to be present in ../dict/
 
 =cut

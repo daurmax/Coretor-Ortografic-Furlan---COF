@@ -82,6 +82,10 @@ BREAKING CHANGE: phonetic algorithm API changed from get_hash() to get_phonetic_
 - **Historical context**: Explain COF's significance in Friulian computational linguistics
 - **Technical accuracy**: Provide precise algorithm documentation with examples
 - **Setup instructions**: Include complete Windows/Perl setup procedures
+- **Historical Preservation**: **NEVER modify historical changelog entries or original structure descriptions**
+  - When documenting structural changes, add NEW entries without altering existing ones
+  - Preserve original path references in historical documentation (e.g., `COF-2.16/` paths in old changelog entries)
+  - Update only current operational instructions and documentation, not historical descriptions
 
 ### Testing Requirements
 - **Reference validation**: All phonetic algorithm changes must pass existing test suite
@@ -121,6 +125,10 @@ These examples show how to call utilities in `util/` to extract static expected 
 - **Careful modifications**: Prefer additive changes over modifications
 - **Documentation first**: Document before implementing
 - **Test validation**: Always validate against original Perl implementation
+- **Historical Integrity**: When repository structure changes, ONLY update current operational paths
+  - Never alter historical changelog entries describing original structure
+  - Never modify original structure descriptions in README/documentation
+  - Add new sections for current state without changing historical descriptions
 
 ## Quality Standards
 
