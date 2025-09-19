@@ -20,8 +20,10 @@ This repository represents version **2.16** of COF, built on **20110620** with l
 - Dictionary files in `dict/`
 - Build configuration files
 
-**Files added for documentation**:
+**Files added for testing and documentation**:
 - `README.md` - This documentation
+- `tests/test_phonetic_perl.pl` - Phonetic algorithm test suite (47 test cases)
+- `.gitignore` - Git ignore patterns (if present)
 
 ## Architecture
 
@@ -114,6 +116,9 @@ cpan install Carp::Always
 perl Build.PL
 perl Build
 
+# Run phonetic algorithm tests
+perl tests/test_phonetic_perl.pl
+
 # Launch GUI application
 perl script/cof.pl
 
@@ -142,9 +147,30 @@ COF-2.16/
 └── Build.PL           # Build configuration
 ```
 
-### Documentation Additions
+### Testing Additions (this branch)
 ```
+├── tests/             # Test suites (added)
+│   └── test_phonetic_perl.pl  # Phonetic algorithm tests (47 cases)
 └── README.md          # This documentation (added)
+```
+
+## Testing the Phonetic Algorithm
+
+The repository includes a comprehensive test suite for the phonetic algorithm with 47 test cases covering:
+
+- **Basic Words**: Common Friulian vocabulary
+- **Diphthongs**: ai, ei, ou, oi, vu sequences  
+- **Consonant Clusters**: cj, gj, sci/sce patterns
+- **Accented Characters**: à/â/á, è/ê/é variations
+- **Edge Cases**: Start-of-word consonants, special endings
+
+```powershell
+# Run phonetic tests
+perl tests/test_phonetic_perl.pl
+
+# Expected output format:
+# word -> ("hash1", "hash2")
+# cjatâ -> ("A696", "c7696")
 ```
 
 ## Historical Context
@@ -165,7 +191,7 @@ For improvements or new features:
 1. Fork this repository for reference
 2. Create derivative projects (e.g., Python, C#, JavaScript ports)
 3. Maintain compatibility with the original `phalg_furlan` algorithm
-4. Document and validate implementations against this reference
+4. Use the test suite to validate implementations
 
 ## License
 
