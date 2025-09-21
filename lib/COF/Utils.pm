@@ -5,7 +5,12 @@ use warnings;
 use utf8;
 
 use File::Spec;
-use File::HomeDir;
+
+# Optional dependency - gracefully handle if not available
+our $HAS_HOMEDIR = 0;
+BEGIN {
+    eval { require File::HomeDir; File::HomeDir->import(); $HAS_HOMEDIR = 1; };
+}
 
 use parent qw(Exporter);
 our @EXPORT_OK =
@@ -42,7 +47,7 @@ sub get_res_dir {
 sub get_user_dir {
     my $no_die = shift;
     if ( !defined $user_dir ) {
-        if ( my $path_prefix = File::HomeDir->my_data ) {
+        if ( $HAS_HOMEDIR && (my $path_prefix = File::HomeDir->my_data) ) {
             $user_dir = File::Spec->catdir( $path_prefix, $BASE_USER_DIR );
             if ( !-e $user_dir ) {
                 if ( !mkdir($user_dir) ) {
