@@ -1,3 +1,116 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use utf8;
+use FindBin;
+use File::Spec;
+
+=head1 NAME
+
+run_all_tests.pl - Unified COF test suite runner
+
+=head1 DESCRIPTION
+
+Runs every consolidated test file in this directory. This is the ONLY entrypoint
+to execute the full test suite. No test runners are kept in `util/`.
+
+Included suites:
+- SpellChecker (core spelling + suggestions)
+- RadixTree (RT structure + lookup + suggestions)
+- Phonetic hashing (phalg_furlan correctness)
+- WordIterator (tokenization + Unicode + edge cases)
+- Database (key/value lookups, error handling, integrity)
+- Encoding (UTF-8 handling + corruption detection)
+- FastChecker (state + performance-related invariants)
+- RTChecker (memory + suggestion generation)
+- CLI parameter validation (error surface + I/O)
+
+=head1 USAGE
+
+From project root or from this directory:
+
+  perl tests/run_all_tests.pl
+  # or
+  cd tests && perl run_all_tests.pl
+
+Returns exit code 0 if all suites pass, 1 otherwise.
+
+=cut
+
+my @test_suites = (
+    { file => 'test_worditerator.pl',           name => 'WordIterator',        desc => 'Iterator logic, Unicode, edge cases' },
+    { file => 'test_core_functionality.pl',     name => 'Core Functionality',  desc => 'Database, SpellChecker, phonetic algorithms' },
+    { file => 'test_components.pl',             name => 'Components',          desc => 'FastChecker and RTChecker components' },
+    { file => 'test_utilities.pl',              name => 'Utilities',           desc => 'Encoding, CLI validation, legacy data' },
+);
+
+# Ensure we are in the tests directory so relative paths resolve
+my $script_dir = $FindBin::Bin; # directory of this script
+chdir $script_dir or die "Cannot chdir to tests directory ($script_dir): $!";
+
+print "=" x 70, "\n";
+print "COF TEST SUITE RUNNER\n";
+print "Unified execution of all consolidated test suites\n";
+print "=" x 70, "\n\n";
+
+my $total = scalar @test_suites;
+my $passed = 0;
+my $failed = 0;
+my @failed;
+
+for my $suite (@test_suites) {
+    my ($file,$name,$desc) = @$suite{qw/file name desc/};
+    print '-' x 60, "\n";
+    print "Running: $name\n";
+    print "File: $file\n";
+    print "Description: $desc\n";
+    print '-' x 60, "\n";
+
+    if (!-f $file) {
+        print "[MISSING] $file not found\n\n";
+        $failed++;
+        push @failed, $name;
+        next;
+    }
+
+    my $exit = system($^X, $file); # use same perl
+    $exit = $exit >> 8;
+    if ($exit == 0) {
+        print "[PASS] $name\n\n";
+        $passed++;
+    } else {
+        print "[FAIL] $name (exit=$exit)\n\n";
+        $failed++;
+        push @failed, $name;
+    }
+}
+
+print "=" x 70, "\n";
+print "SUMMARY\n";
+print "=" x 70, "\n";
+print "Suites total: $total\n";
+print "Passed      : $passed\n";
+print "Failed      : $failed\n";
+
+if ($failed) {
+    print "Failed suites:\n";
+    print "  - $_\n" for @failed;
+    print "\nRESULT: SOME FAILURES\n";
+    exit 1;
+} else {
+    print "\nRESULT: ALL PASSED ✔\n";
+    exit 0;
+}
+
+__END__
+
+=head1 NOTES
+
+Keep any additional helper or experimental runner scripts OUTSIDE this directory
+or clearly named so as not to confuse the canonical entrypoint. Avoid duplicating
+logic that lives here.
+
+=cut
 #!/usr/bin/env perl
 
 use strict;
@@ -15,7 +128,14 @@ This script runs comprehensive test suites for COF:
 - SpellChecker functionality tests (test_spell_checker.pl)  
 - KeyValueDatabase functionality tests (test_key_value_database.pl)
 
-Total test coverage: 76 tests validating complete COF functionality.
+Total test coverage: 138+ tests validating complete COF functionality including:
+- Core functionality (76 original tests)
+- Database robustness (8 tests)
+- Encoding corruption handling (20 tests) 
+- CLI parameter validation (22 tests)
+- WordIterator simplified (8 tests)
+- RT_Checker robustness (8 tests)
+- FastChecker simplified (6 tests)
 
 =head1 USAGE
 
@@ -38,6 +158,7 @@ print "Complete validation framework for COF functionality\n";
 print "=" x 60, "\n\n";
 
 my @test_files = (
+    # Core functionality tests (existing)
     {
         file => 'test_radix_tree.pl',
         name => 'RadixTree (RT_Checker) Tests',
@@ -57,6 +178,42 @@ my @test_files = (
         file => 'test_phonetic_perl.pl',
         name => 'Phonetic Algorithm Tests',
         description => 'Phonetic hash algorithm validation (phalg_furlan)'
+    },
+    
+    # High priority robustness tests (new)
+    {
+        file => 'test_database_simplified.pl',
+        name => 'Database Robustness Tests',
+        description => 'DB_File handling, corruption detection, UTF-8 support'
+    },
+    {
+        file => 'test_encoding_corruption.pl',
+        name => 'Encoding Corruption Tests',
+        description => 'UTF-8/ISO-8859-1 conversion failures, invalid sequences'
+    },
+    {
+        file => 'test_cli_parameter_validation.pl',
+        name => 'CLI Parameter Validation Tests',
+        description => 'CLI utilities error handling, invalid parameters, file I/O'
+    },
+    
+    # Medium priority edge case tests (new)
+    {
+        file => 'test_worditerator_simplified.pl',
+        name => 'WordIterator Simplified Tests',
+        description => 'Basic functionality and edge case handling'
+    },
+    {
+        file => 'test_rtchecker_simplified.pl',
+        name => 'RT_Checker Robustness Tests',
+        description => 'Performance, consistency, boundary conditions'
+    },
+    
+    # Low priority state consistency tests (new)
+    {
+        file => 'test_fastchecker_simplified.pl',
+        name => 'FastChecker Simplified Tests',
+        description => 'Basic state structure and data handling'
     }
 );
 
