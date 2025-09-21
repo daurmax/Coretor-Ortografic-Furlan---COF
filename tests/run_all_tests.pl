@@ -39,14 +39,9 @@ Returns exit code 0 if all suites pass, 1 otherwise.
 
 my @test_suites = (
     { file => 'test_worditerator.pl',           name => 'WordIterator',        desc => 'Iterator logic, Unicode, edge cases' },
-    { file => 'test_encoding.pl',               name => 'Encoding',            desc => 'UTF-8 handling and corruption detection' },
-    { file => 'test_fastchecker.pl',            name => 'FastChecker',         desc => 'Fast checker state and reusability' },
-    { file => 'test_rtchecker.pl',              name => 'RTChecker',           desc => 'RTChecker internal logic and suggestions' },
-    { file => 'test_cli_parameter_validation.pl', name => 'CLI Params',       desc => 'CLI invalid input + error surface' },
-    { file => 'test_legacy_words.pl',           name => 'Legacy Words',        desc => 'Legacy vocabulary surface coverage' },
-    { file => 'test_phonetic_algorithms.pl',    name => 'Phonetic Algorithms', desc => 'Pure algorithmic functions without DB' },
-    { file => 'test_database_real.pl',          name => 'Real Database',       desc => 'Real database connections like CLI' },
-    { file => 'test_spell_checker_real.pl',     name => 'Real SpellChecker',   desc => 'SpellChecker with real DB backend' },
+    { file => 'test_core_functionality.pl',     name => 'Core Functionality',  desc => 'Database, SpellChecker, phonetic algorithms' },
+    { file => 'test_components.pl',             name => 'Components',          desc => 'FastChecker and RTChecker components' },
+    { file => 'test_utilities.pl',              name => 'Utilities',           desc => 'Encoding, CLI validation, legacy data' },
 );
 
 # Ensure we are in the tests directory so relative paths resolve

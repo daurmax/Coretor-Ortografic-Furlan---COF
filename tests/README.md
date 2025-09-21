@@ -1,52 +1,63 @@
 # COF Test Suite
 
-Questa directory contiene l'intera test suite consolidata del progetto COF. È l'unica fonte autorevole per l'esecuzione dei test. Nessun test runner vive più in `util/`.
+This directory contains the consolidated test suite for the COF (Coretor Ortografic Furlan) project. 
 
-## Obiettivi della suite
-- Validare il comportamento del correttore ortografico Friulano end-to-end
-- Coprire struttura RadixTree, hashing fonetico, iteratori, encoding e DB
-- Assicurare robustezza su input non validi, edge cases e caratteri Unicode
-- Verificare che l'interfaccia CLI gestisca errori e parametri incorretti
+## Test Structure
 
-## File di test
-| File | Scopo sintetico |
-|------|-----------------|
-| `test_spell_checker.pl` | Verifica parole, suggerimenti, risposta per termini inesistenti |
-| `test_radix_tree.pl` | Struttura RT, ricerca, suggerimenti basati su distanza |
-| `test_phonetic_perl.pl` | Coerenza algoritmo fonetico `phalg_furlan` |
-| `test_worditerator.pl` | Tokenizzazione, Unicode, delimitatori, casi limite |
-| `test_database.pl` | Lookup, integrità key/value, gestione errori DB_File |
-| `test_encoding.pl` | Gestione UTF-8, sequenze invalide, rilevazione corruzione |
-| `test_fastchecker.pl` | Stato interno, riutilizzo, coerenza risposta |
-| `test_rtchecker.pl` | Suggestion logic, gestione memoria, continuità |
-| `test_cli_parameter_validation.pl` | Validazione parametri CLI, messaggi errore, I/O |
+The test suite has been organized into 4 logical test files that comprehensively cover all COF functionality:
 
-## Runner principale
-Eseguire tutti i test:
+### Core Test Files
+
+| File | Tests | Purpose |
+|------|--------|---------|
+| `test_core_functionality.pl` | 46 | Database connectivity, SpellChecker, phonetic algorithms |
+| `test_components.pl` | 22 | FastChecker and RTChecker component testing |
+| `test_utilities.pl` | 37 | Encoding, CLI validation, legacy data handling |
+| `test_worditerator.pl` | 67 | WordIterator functionality and text processing |
+
+### Test Runner
+
+- **`run_all_tests.pl`** - Unified test suite runner for all 4 test files
+
+## Running Tests
+
+### Individual Test Files
 ```bash
-perl tests/run_all_tests.pl
+perl test_core_functionality.pl
+perl test_components.pl  
+perl test_utilities.pl
+perl test_worditerator.pl
 ```
-Può essere lanciato anche da dentro la directory:
+
+### Complete Test Suite
 ```bash
-cd tests && perl run_all_tests.pl
+perl run_all_tests.pl
 ```
-Exit code 0 = tutti i test passano, 1 = almeno una suite fallita.
 
-## Convenzioni
-- Ogni file definisce una singola unità logica di copertura
-- Niente logica di business dentro i test (solo orchestrazione + asserzioni)
-- Nomi: `test_<component>.pl` (minuscolo, underscore se necessario)
-- Output: formato TAP standard (Test::More)
+## Test Philosophy
 
-## Aggiungere un nuovo test
-1. Scegli un nome coerente: `test_<nuovocomponente>.pl`
-2. Inizia con:
-   ```perl
-   use strict; use warnings; use utf8; use Test::More;
-   ```
-3. Copri un solo asse concettuale (evita multi-component mashup)
-4. Mantieni le `plan tests => N` accurate (o usa `done_testing`) 
-5. Evita dipendenze esterne non necessarie
+All tests follow these principles:
+- **Real Database Testing**: Core tests use actual COF databases for integration testing
+- **Graceful Component Handling**: Component tests handle optional modules gracefully  
+- **Robust Error Handling**: All eval blocks use proper error checking patterns
+- **Comprehensive Coverage**: Tests cover normal operations, edge cases, and error conditions
+- **TAP Compliance**: All tests use Test::More with proper TAP output
+
+## Test Results Summary
+
+- **Total Tests**: 172 tests across all suites
+- **Expected Results**: All tests should pass with proper COF installation
+- **Database Dependencies**: Core tests require COF dictionaries in `../dict/` directory
+- **Component Dependencies**: Component tests handle missing FastChecker/RTChecker gracefully
+
+## Maintenance
+
+This consolidated structure replaces the previous 17+ individual test files, providing:
+- Better organization and maintainability
+- Logical grouping of related functionality
+- Reduced test suite complexity
+- Improved test execution performance
+- Cleaner directory structure following AGENTS.md guidelines
 
 ## Linee guida qualità
 - Test chiari: ogni `ok` / `is` deve spiegare il perché

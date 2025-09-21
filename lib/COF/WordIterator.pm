@@ -55,7 +55,7 @@ sub ahead {
 sub unshift_current {
     my $self = shift;
     if ( my $current = $self->{current} ) {
-        unshift( $self->{queue}, $current );
+        unshift( @{$self->{queue}}, $current );
         $self->{current} = undef;
         return 1;
     }
@@ -87,7 +87,7 @@ sub unshift_current_fix_apos {
                         length => 1
                     }
                 };
-                unshift( $self->{queue}, $apo_tok );
+                unshift( @{$self->{queue}}, $apo_tok );
                 my ( $pos_shift, $length_dec ) =
                   $apo_type eq 'AFTER' ? ( 0, 1 ) : ( 1, 2 );
                 $current->{word} = substr( $current->{word}, $pos_shift, -1 );
