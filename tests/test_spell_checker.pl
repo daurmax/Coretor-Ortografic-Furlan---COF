@@ -8,6 +8,13 @@ use FindBin;
 use File::Spec;
 use lib File::Spec->catdir($FindBin::Bin, '..', 'lib');
 
+BEGIN {
+    # If DB_File (XS) is missing, skip the entire test file gracefully.
+    eval { require DB_File; 1 } or do {
+        require Test::More;
+        Test::More::plan(skip_all => 'DB_File not available; skipping SpellChecker tests');
+    };
+}
 use COF::Data;
 use COF::SpellChecker;
 

@@ -8,6 +8,12 @@ use FindBin;
 use File::Spec;
 use lib File::Spec->catdir($FindBin::Bin, '..', 'lib');
 
+BEGIN {
+    eval { require DB_File; 1 } or do {
+        require Test::More;
+        Test::More::plan(skip_all => 'DB_File not available; skipping Phonetic tests');
+    };
+}
 use COF::Data;
 
 # Test setup
