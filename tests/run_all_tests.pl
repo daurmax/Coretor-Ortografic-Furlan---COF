@@ -42,6 +42,7 @@ my @test_suites = (
     { file => 'test_core_functionality.pl',     name => 'Core Functionality',  desc => 'Database, SpellChecker, phonetic algorithms' },
     { file => 'test_components.pl',             name => 'Components',          desc => 'FastChecker and RTChecker components' },
     { file => 'test_utilities.pl',              name => 'Utilities',           desc => 'Encoding, CLI validation, legacy data' },
+    { file => 'test_phonetic_algorithm.pl',     name => 'Phonetic Algorithm',  desc => 'Comprehensive phonetic algorithm validation' },
 );
 
 # Ensure we are in the tests directory so relative paths resolve

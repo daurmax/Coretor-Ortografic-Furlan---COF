@@ -10,16 +10,16 @@ The test suite is organized into specialized test files that comprehensively cov
 
 | File | Tests | Purpose |
 |------|--------|---------|
-| `test_core_functionality.pl` | Various | Database connectivity, basic SpellChecker operations |
-| `test_core_functionality_compat.pl` | Various | COF::DataCompat compatibility validation and testing |
-| `test_components.pl` | Various | FastChecker and RTChecker component testing |
-| `test_utilities.pl` | Various | Encoding, CLI validation, legacy data handling |
-| `test_worditerator.pl` | Various | WordIterator functionality and text processing |
-| `test_phonetic_algorithm.pl` | 149 | Comprehensive phonetic algorithm testing with unified test cases |
+| `test_core_functionality.pl` | 35 | Database connectivity, basic SpellChecker operations |
+| `test_core_functionality_compat.pl` | 18 | COF::DataCompat compatibility validation and testing |
+| `test_components.pl` | 21 | FastChecker and RTChecker component testing |
+| `test_utilities.pl` | 22 | Encoding, CLI validation, legacy data handling |
+| `test_worditerator.pl` | 21 | WordIterator functionality and text processing |
+| `test_phonetic_algorithm.pl` | 203 | Comprehensive phonetic algorithm testing (95 words × 2 tests + 13 robustness tests) |
 
 ### Test Runner
 
-- **`run_all_tests.pl`** - Unified test suite runner for all 4 test files
+- **`run_all_tests.pl`** - Unified test suite runner for all 6 test files
 
 ## Running Tests
 
@@ -49,7 +49,7 @@ All tests follow these principles:
 
 ## Test Results Summary
 
-- **Phonetic Algorithm Tests**: 149 comprehensive tests for exact Perl-Python compatibility
+- **Phonetic Algorithm Tests**: 207 comprehensive tests for exact Perl-Python compatibility (97 words × 2 hashes + 13 robustness tests)
 - **Other Test Suites**: Various tests across core functionality, components, utilities, and word iteration
 - **Expected Results**: All tests should pass with proper COF installation
 - **Database Dependencies**: Core tests require COF dictionaries in `../dict/` directory
