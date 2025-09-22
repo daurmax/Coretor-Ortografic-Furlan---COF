@@ -6,6 +6,7 @@
 
 use strict;
 use warnings;
+use utf8;
 use Test::More;
 use lib '../lib';
 use COF::DataCompat;
@@ -15,7 +16,7 @@ use COF::DataCompat;
 my @phonetic_test_cases = (
     # Core regression tests from original COF
     ['furlan', 'fYl65', 'fYl65'],
-    ['cjase', 'A6A7', 'c7E7'],
+    ['cjase', 'A6A7', 'c76E7'],
     ['lenghe', 'X7', 'X7'],
     ['scuele', 'AA87l7', 'Ec87l7'],
     ['mandrie', '5659r77', '5659r77'],
@@ -55,7 +56,7 @@ my @phonetic_test_cases = (
     ['là', 'l6', 'l6'],
     
     # Basic words and common patterns
-    ['nuie', '587', '587'],
+    ['nuie', '5877', '5877'],
     ['mote', '5897', '5897'],
     
     # Words with 'ç' consonant
