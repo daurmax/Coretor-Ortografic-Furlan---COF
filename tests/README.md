@@ -4,17 +4,18 @@ This directory contains the consolidated test suite for the COF (Coretor Ortogra
 
 ## Test Structure
 
-The test suite has been organized into 4 logical test files that comprehensively cover all COF functionality:
+The test suite is organized into specialized test files that comprehensively cover all COF functionality:
 
 ### Core Test Files
 
 | File | Tests | Purpose |
 |------|--------|---------|
-| `test_core_functionality.pl` | 46 | Database connectivity, SpellChecker, phonetic algorithms |
-| `test_components.pl` | 22 | FastChecker and RTChecker component testing |
-| `test_utilities.pl` | 37 | Encoding, CLI validation, legacy data handling |
-| `test_worditerator.pl` | 67 | WordIterator functionality and text processing |
-| `test_compat_final.pl` | 16 | COF::DataCompat compatibility validation |
+| `test_core_functionality.pl` | Various | Database connectivity, basic SpellChecker operations |
+| `test_core_functionality_compat.pl` | Various | COF::DataCompat compatibility validation and testing |
+| `test_components.pl` | Various | FastChecker and RTChecker component testing |
+| `test_utilities.pl` | Various | Encoding, CLI validation, legacy data handling |
+| `test_worditerator.pl` | Various | WordIterator functionality and text processing |
+| `test_phonetic_algorithm.pl` | 149 | Comprehensive phonetic algorithm testing with unified test cases |
 
 ### Test Runner
 
@@ -25,10 +26,11 @@ The test suite has been organized into 4 logical test files that comprehensively
 ### Individual Test Files
 ```bash
 perl test_core_functionality.pl
+perl test_core_functionality_compat.pl
 perl test_components.pl  
 perl test_utilities.pl
 perl test_worditerator.pl
-perl test_compat_final.pl
+perl test_phonetic_algorithm.pl
 ```
 
 ### Complete Test Suite
@@ -47,7 +49,8 @@ All tests follow these principles:
 
 ## Test Results Summary
 
-- **Total Tests**: 188 tests across all suites (including 16 compatibility tests)
+- **Phonetic Algorithm Tests**: 149 comprehensive tests for exact Perl-Python compatibility
+- **Other Test Suites**: Various tests across core functionality, components, utilities, and word iteration
 - **Expected Results**: All tests should pass with proper COF installation
 - **Database Dependencies**: Core tests require COF dictionaries in `../dict/` directory
 - **Component Dependencies**: Component tests handle missing FastChecker/RTChecker gracefully
@@ -60,19 +63,6 @@ This consolidated structure replaces the previous 17+ individual test files, pro
 - Reduced test suite complexity
 - Improved test execution performance
 - Cleaner directory structure following AGENTS.md guidelines
-
-## Cleaned Structure (2024)
-
-This directory has been cleaned of temporary development files:
-
-**Removed Files**:
-- Development test files: `test_sdbm_fix.pl`, `test_data_compat.pl`, `test_complete_compat.pl`, `test_complete_compat_simple.pl`
-- Duplicate utilities that were moved to `util/`
-
-**Final Test Structure**:
-- **Core production tests**: `test_core_functionality.pl`, `test_components.pl`, `test_utilities.pl`, `test_worditerator.pl`
-- **Compatibility validation**: `test_compat_final.pl` - validates COF::DataCompat provides identical results to COF::Data
-- **Test runner**: `run_all_tests.pl` - executes all test suites
 
 ## Linee guida qualità
 - Test chiari: ogni `ok` / `is` deve spiegare il perché
@@ -92,9 +82,10 @@ This directory has been cleaned of temporary development files:
 
 ## Compatibility Note
 
-The `test_compat_final.pl` test validates that the new COF::DataCompat module (using SDBM_File) 
-provides identical phonetic algorithm results to the original COF::Data module (using BerkeleyDB). 
-This ensures 100% compatibility when DB_File is unavailable.
+The `test_core_functionality_compat.pl` test validates basic COF::DataCompat functionality, 
+while `test_phonetic_algorithm.pl` provides comprehensive validation that the COF::DataCompat 
+phonetic algorithm produces identical results to the original implementation. This ensures 
+100% compatibility for phonetic hashing when DB_File is unavailable.
 
 ## Supporto
 Per diagnosticare comportamento interno: usa gli strumenti in `util/` (`spellchecker_utils.pl`, `radixtree_utils.pl`, `encoding_utils.pl`).

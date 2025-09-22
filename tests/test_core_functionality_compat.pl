@@ -61,29 +61,14 @@ diag('Testing core functionality with COF::DataCompat - compatible version witho
     is($data_obj->has_user_dict(), 0, 'User dict correctly disabled in compat version');
 }
 
-# === Phonetic Algorithm Comprehensive Tests ===
+# === Basic Phonetic Algorithm Test ===
 {
-    diag('Testing comprehensive phonetic algorithm (phalg_furlan)');
+    diag('Testing basic phonetic algorithm functionality (detailed tests in test_phonetic_algorithm.pl)');
     
-    # Test cases with expected results
-    my @test_cases = (
-        ['furlan', 'fYl65', 'fYl65'],
-        ['cjase', 'A6A7', 'c76E7'],  
-        ['lenghe', 'X7', 'X7'],
-        ['scuele', 'AY7l7', 'EY7l7'],
-        ['mandrie', '5697', '56I97'],
-        ['barcon', '36A85', '362A85'],
-        ['nade', '5697', '56I7'],
-        ['specifiche', 'A37A4fA7', 'E37A4fA7']
-    );
-    
-    foreach my $test (@test_cases) {
-        my ($word, $expected_primo, $expected_secondo) = @$test;
-        my ($primo, $secondo) = COF::DataCompat::phalg_furlan($word);
-        
-        is($primo, $expected_primo, "phalg_furlan('$word') - primo: '$primo'");
-        is($secondo, $expected_secondo, "phalg_furlan('$word') - secondo: '$secondo'");
-    }
+    # Basic functionality test - just verify the method works
+    my ($p1, $s1) = COF::DataCompat::phalg_furlan('furlan');
+    ok(defined($p1) && defined($s1), 'phalg_furlan returns defined values');
+    ok(length($p1) > 0 && length($s1) > 0, 'phalg_furlan returns non-empty hashes for valid input');
     
     # Test edge cases
     is_deeply([COF::DataCompat::phalg_furlan('')], ['', ''], 'Empty string handling');

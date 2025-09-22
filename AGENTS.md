@@ -120,6 +120,23 @@ perl util/spellchecker_utils.pl cjupe array  # print as qw(...) for tests
 
 These examples show how to call utilities in `util/` to extract static expected values for tests or diagnose encoding issues.
 
+**Current Support Functions**
+
+The `util/` directory contains comprehensive support functions documented in `util/README.md`. Key utilities include:
+
+- **Phonetic Hash Generation**: `spellchecker_utils.pl --generate-hashes --format=python word1 word2...`
+- **Spell Checking**: `spellchecker_utils.pl --suggest WORD` or `--word WORD`  
+- **Encoding Analysis**: `encoding_utils.pl --word WORD` for UTF-8 diagnostics
+- **RadixTree Testing**: `radixtree_utils.pl --word WORD` for suggestion analysis
+- **Text Tokenization**: `worditerator_utils.pl --text TEXT` for word iteration testing
+
+**When Adding Support Functions**:
+1. Check if functionality already exists in `util/` directory
+2. Review `util/README.md` for current capabilities and usage patterns
+3. If new functionality is needed, extend existing utilities or create new ones following the `*_utils.pl` convention
+4. Update `util/README.md` with new functionality
+5. Use consistent command-line interfaces matching existing utilities
+
 ### AI Agent Considerations
 - **Context preservation**: Maintain understanding of repository's historical significance
 - **Careful modifications**: Prefer additive changes over modifications

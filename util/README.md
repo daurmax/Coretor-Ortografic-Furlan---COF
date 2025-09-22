@@ -21,6 +21,8 @@ Spell checking and suggestion analysis utility.
 - `--file FILE` - Load words from file (one per line)
 - `--format list|array|json` - Output format (default: list)
 - `--list` - Print only suggestion words
+- `--generate-hashes [--format=python|perl|text] word1 word2...` - Generate phonetic hashes for words
+- `--compat` - Force COF::DataCompat mode (bypass COF::Data auto-detection)
 
 ### `radixtree_utils.pl`  
 RadixTree suggestion debugging utility.
@@ -57,6 +59,9 @@ perl util/spellchecker_utils.pl --word cjase --format json
 
 # Process words from file
 perl util/spellchecker_utils.pl --file wordlist.txt --list
+
+# Generate phonetic hashes (for testing/development)
+perl util/spellchecker_utils.pl --generate-hashes --format=python furlan cjase lenghe
 ```
 
 > **Note**: `spellchecker_utils.pl` automatically detects and uses COF::DataCompat 

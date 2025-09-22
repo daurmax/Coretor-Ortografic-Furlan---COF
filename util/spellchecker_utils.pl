@@ -12,6 +12,12 @@ use Getopt::Long qw(GetOptions);
 use JSON::PP;
 use Encode qw(encode);
 
+# Check for special --generate-hashes flag before processing other options
+if (@ARGV && $ARGV[0] eq '--generate-hashes') {
+    handle_generate_hashes();
+    exit 0;
+}
+
 my $help = 0;
 my $word;
 my $phonetic = '';
@@ -65,6 +71,8 @@ if ($use_compat) {
     }
 }
 
+
+
 # Processing
 if ($word) {
     process_single_word($word);
@@ -78,6 +86,59 @@ if ($word) {
     print "Specificare --word, --phonetic, --suggest o --file\n";
     print_help();
     exit 1;
+}
+
+sub handle_generate_hashes {
+    shift @ARGV;  # Remove --generate-hashes flag
+    
+    # Check for format option
+    my $gen_format = 'text';
+    if (@ARGV && $ARGV[0] =~ /^--format=(.+)/) {
+        $gen_format = $1;
+        shift @ARGV;
+    }
+    
+    my @words = @ARGV;
+    
+    if (!@words) {
+        print "Usage: $0 --generate-hashes [--format=python|perl|text] word1 word2 ...\n";
+        exit 1;
+    }
+    
+    # Initialize COF modules
+    my ($data_module, $data_obj);
+    
+    # Always use compat mode for hash generation (simpler)
+    eval {
+        require COF::DataCompat;
+        my $dict_dir = get_dict_dir();
+        my %args = COF::DataCompat::make_default_args($dict_dir);
+        $data_obj = COF::DataCompat->new(%args);
+        $data_module = 'COF::DataCompat';
+    };
+    
+    if ($@) {
+        die "Errore caricamento COF::DataCompat: $@\n";
+    }
+    
+    # Generate hashes
+    print "# Generated phonetic test cases:\n";
+    foreach my $word (@words) {
+        my ($p1, $p2) = eval { COF::DataCompat::phalg_furlan($word) };
+        
+        if ($@) {
+            warn "Error processing word '$word': $@";
+            next;
+        }
+        
+        if ($gen_format eq 'python') {
+            print "('$word', '$p1', '$p2'),\n";
+        } elsif ($gen_format eq 'perl') {
+            print "['$word', '$p1', '$p2'],\n";
+        } else {
+            print "$word -> '$p1', '$p2'\n";
+        }
+    }
 }
 
 sub load_compat_mode {
@@ -276,6 +337,39 @@ NOTE:
 
 EOF
 }
+
+#
+# Generate phonetic hashes for a list of words - utility function for testing
+#
+sub generate_phonetic_hashes {
+    my @words = @_;
+    
+    print "# Generated phonetic test cases:\n";
+    foreach my $word (@words) {
+        my ($p1, $p2) = eval { 
+            if ($data_module eq 'COF::DataCompat') {
+                COF::DataCompat::phalg_furlan($word);
+            } else {
+                $data_obj->phalg_furlan($word);
+            }
+        };
+        
+        if ($@) {
+            warn "Error processing word '$word': $@";
+            next;
+        }
+        
+        if ($format eq 'python') {
+            print "('$word', '$p1', '$p2'),\n";
+        } elsif ($format eq 'perl') {
+            print "['$word', '$p1', '$p2'),\n";
+        } else {
+            print "$word -> '$p1', '$p2'\n";
+        }
+    }
+}
+
+
 
 __END__
 
