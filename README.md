@@ -46,6 +46,44 @@ This repository preserves Franz Feregot's original COF implementation with moder
 
 ## Architecture
 
+### Compatibility Solutions
+
+**⚠️ DB_File Dependency Issue**: The original COF implementation depends on BerkeleyDB through Perl's `DB_File` module. On some systems (especially Windows with Strawberry Perl), this dependency may not be available or properly configured.
+
+**Solution: COF::DataCompat**
+We provide `COF::DataCompat` - a fully compatible alternative to `COF::Data` that:
+- ✅ **Complete phonetic algorithm**: Identical `phalg_furlan` implementation (100% compatibility)
+- ✅ **No BerkeleyDB dependency**: Uses SDBM_File (included in standard Perl)
+- ✅ **Drop-in replacement**: Same API as `COF::Data` for phonetic functions
+- ⚠️ **Limited dictionary features**: Database operations are restricted but phonetic algorithm works fully
+
+**Usage**:
+```perl
+# Instead of: use COF::Data;
+use COF::DataCompat;
+
+# Phonetic algorithm works identically
+my ($primo, $secondo) = COF::DataCompat::phalg_furlan('furlan');
+# Returns: ('fYl65', 'fYl65')
+
+# Object creation (with limitations)
+my $data = COF::DataCompat->new(
+    words_ph => 'dict/words.db',
+    words_rt => 'dict/words.rt'
+);
+```
+
+**When to use COF::DataCompat**:
+- BerkeleyDB/DB_File installation issues
+- Systems without proper Berkeley DB libraries
+- When you only need the phonetic algorithm
+- Cross-platform compatibility requirements
+
+**Test files available**:
+- `test_complete_compat.pl` - Comprehensive compatibility tests
+- `tests/test_core_functionality_compat.pl` - Core functionality with compat version
+- `util/spellchecker_utils_compat.pl` - Compatible utilities
+
 ### Core Components
 
 1. **COF::App** - Main application entry point with Wx GUI framework
@@ -210,6 +248,35 @@ Modern additions while preserving original structure in flat hierarchy:
 ├── .gitattributes              # Git LFS configuration
 ├── .github/                    # GitHub integration
 │   └── copilot-instructions.md # AI assistance guidelines
+├── lib/COF/DataCompat.pm       # 🆕 DB_File-free compatible version
+├── test_complete_compat.pl     # 🆕 Comprehensive compatibility tests
+├── test_data_compat.pl         # 🆕 DataCompat vs Data comparison
+└── util/spellchecker_utils_compat.pl  # 🆕 Compatible utilities
+
+### 🔧 Compatibility Files
+
+**Problem**: The original COF depends on BerkeleyDB through Perl's `DB_File` module. On Windows systems with Strawberry Perl, this often fails due to missing or corrupted `DB_File.xs.dll`.
+
+**Solution**: We provide compatibility alternatives that maintain 100% algorithm accuracy:
+
+```
+├── lib/COF/DataCompat.pm       # Drop-in replacement for COF::Data
+│                               # - Complete phalg_furlan algorithm  
+│                               # - Uses SDBM_File (standard Perl)
+│                               # - No BerkeleyDB dependency
+│                               # - Limited dictionary features
+├── tests/test_core_functionality_compat.pl  # Compat version tests
+├── test_complete_compat.pl     # Full compatibility test suite
+├── test_data_compat.pl         # Side-by-side comparison tests  
+└── util/spellchecker_utils_compat.pl  # CLI utilities (compat version)
+```
+
+**Key Features of Compatibility Version**:
+- ✅ **100% Algorithm Parity**: Identical phonetic results to original
+- ✅ **Cross-Platform**: Works on any Perl installation 
+- ✅ **Zero Additional Dependencies**: Uses only standard Perl modules
+- ⚠️ **Reduced Functionality**: Dictionary operations limited
+- 🎯 **Primary Use Case**: Phonetic algorithm integration
 ├── [original files]            # All COF-2.16 files at root level
 ├── dict/                       # Enhanced dictionary folder
 │   ├── empty                   # Original placeholder (preserved)

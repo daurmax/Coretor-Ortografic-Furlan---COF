@@ -52,12 +52,16 @@ WordIterator debugging and token analysis utility.
 # Get suggestions for a word
 perl util/spellchecker_utils.pl --suggest cjupe
 
-# Analyze specific word
+# Analyze specific word  
 perl util/spellchecker_utils.pl --word cjase --format json
 
 # Process words from file
 perl util/spellchecker_utils.pl --file wordlist.txt --list
 ```
+
+> **Note**: `spellchecker_utils.pl` automatically detects and uses COF::DataCompat 
+> (SDBM-based) if COF::Data (BerkeleyDB-based) is unavailable. This provides 
+> seamless compatibility across different Perl installations.
 
 ### RadixTree Analysis
 ```bash
@@ -105,8 +109,24 @@ perl util/worditerator_utils.pl --file sample.txt --limit 50
 3. Avoid hardcoding paths; derive relative paths with `FindBin` + `File::Spec` if needed.
 4. Keep output deterministic and script exit codes meaningful (0 success, non‑zero on error).
 
-### Removed Legacy Items
-- Test runners (`run_all_tests.pl`, `run_tests_simplified.pl`) eliminati da `util/`. Usa `perl tests/run_all_tests.pl`.
+### Cleaned Structure (2024)
+This directory has been cleaned of temporary development files:
+
+**Removed Files**:
+- Development test files: `test_phonetic_standalone.pl`, `test_phonetic.pl`, `test_perl_phonetic_comparison.pl`, `test_perl_clean.pl`, `test_for_python.pl`, `phonetic_test_standalone.pl`, `phonetic_test_utils.pl`
+- Temporary CSV files: `perl_results.csv`, `python_results.csv`
+- Legacy test runners: `run_all_tests.pl`, `run_tests_simplified.pl`
+- Duplicate utilities: `spellchecker_utils_compat.pl`
+
+**Consolidated**:
+- `spellchecker_utils.pl` now unified with automatic COF::Data/COF::DataCompat detection
+
+**Current Structure**:
+- `encoding_utils.pl` - Text encoding analysis and conversion
+- `radixtree_utils.pl` - RadixTree operations and diagnostics
+- `spellchecker_utils.pl` - Unified spell checking (with compatibility auto-detection)
+- `worditerator_utils.pl` - Text tokenization and word iteration
+- `README.md` - This documentation
 
 ### Support
-For expanding the test suite, see the new `tests/README.md` once added.
+For expanding the test suite, see `tests/README.md` and `tests/run_all_tests.pl`.
