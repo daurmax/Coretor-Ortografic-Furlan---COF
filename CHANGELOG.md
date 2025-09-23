@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.23] - 2025-09-23
+
+### Added
+- **Comprehensive Spell Checker Test Suite**: Real COF validation dataset for cross-platform compatibility
+  - `tests/test_suggestions.pl`: 27 comprehensive test cases based on actual COF::SpellChecker output
+  - Real-world test coverage: phonetic corrections (furla→furlan), elisions (l'aghe→la aghe), case preservation, hyphenated words
+  - Authoritative reference for Python FurlanSpellChecker 1:1 behavioral compatibility validation
+  
+- **Test Dataset Generation Utility**: Following COF naming conventions and documentation standards  
+  - `util/dataset_utils.pl`: CLI utility for generating test datasets from legacy Friulian vocabulary
+  - Support for multiple output formats (list, CSV, JSON) with comprehensive error handling
+  - 47 curated Friulian test words covering edge cases, consonant doubling, accent handling
+  - Complete POD documentation and CLI options following `*_utils.pl` conventions
+
+### Fixed
+- **DB_File Cross-Platform Setup**: Comprehensive documentation for BerkeleyDB dependency resolution
+  - Documented correct PATH configuration solution for Strawberry Perl on Windows
+  - Clear instructions for `C:\Strawberry\c\bin` PATH setup to resolve DB_File loading issues
+  - Alternative fallback documentation using `COF::DataCompat` when PATH configuration unavailable
+  - Enhanced troubleshooting guide with validation commands and environment setup
+
+### Technical Improvements
+- **Test Infrastructure**: Solid foundation for cross-platform spell checker validation
+  - All 27 tests pass with verified COF behavior, covering phonetic algorithms, case handling, elisions
+  - Comprehensive edge case coverage: Friulian characters (ç, cj, gj), consonant sequences, accents
+  - No-suggestion handling and invalid word detection with proper test assertions
+  - Enhanced `util/README.md` with complete documentation for new dataset generation utility
+
 ## [v2.22] - 2025-09-21
 
 ### Changed
