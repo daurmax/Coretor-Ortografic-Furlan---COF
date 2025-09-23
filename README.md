@@ -48,10 +48,27 @@ This repository preserves Franz Feregot's original COF implementation with moder
 
 ### Compatibility Solutions
 
-**⚠️ DB_File Dependency Issue**: The original COF implementation depends on BerkeleyDB through Perl's `DB_File` module. On some systems (especially Windows with Strawberry Perl), this dependency may not be available or properly configured.
+**⚠️ DB_File Dependency Issue**: The original COF implementation depends on BerkeleyDB through Perl's `DB_File` module. On some systems (especially Windows with Strawberry Perl), this dependency may fail with errors like "Can't load 'DB_File.xs.dll'".
 
-**Solution: COF::DataCompat**
-We provide `COF::DataCompat` - a fully compatible alternative to `COF::Data` that:
+**✅ Recommended Solution: Fix PATH for BerkeleyDB**
+The proper solution is to ensure BerkeleyDB libraries are in your system PATH:
+
+**For Strawberry Perl users:**
+```powershell
+# Add BerkeleyDB libraries to PATH
+$env:PATH += ";C:\Strawberry\c\bin"
+# Or permanently via System Properties → Environment Variables
+```
+
+**Verify the fix:**
+```perl
+perl -MDB_File -e "print 'DB_File loaded successfully\n'"
+```
+
+This enables full `COF::Data` functionality with complete database access and all original features.
+
+**🔧 Alternative Solution: COF::DataCompat**
+If PATH configuration is not possible, we provide `COF::DataCompat` as a fallback:
 - ✅ **Complete phonetic algorithm**: Identical `phalg_furlan` implementation (100% compatibility)
 - ✅ **No BerkeleyDB dependency**: Uses SDBM_File (included in standard Perl)
 - ✅ **Drop-in replacement**: Same API as `COF::Data` for phonetic functions
@@ -59,25 +76,18 @@ We provide `COF::DataCompat` - a fully compatible alternative to `COF::Data` tha
 
 **Usage**:
 ```perl
-# Instead of: use COF::Data;
+# Fallback when DB_File cannot be fixed
 use COF::DataCompat;
 
 # Phonetic algorithm works identically
 my ($primo, $secondo) = COF::DataCompat::phalg_furlan('furlan');
 # Returns: ('fYl65', 'fYl65')
-
-# Object creation (with limitations)
-my $data = COF::DataCompat->new(
-    words_ph => 'dict/words.db',
-    words_rt => 'dict/words.rt'
-);
 ```
 
-**When to use COF::DataCompat**:
-- BerkeleyDB/DB_File installation issues
-- Systems without proper Berkeley DB libraries
-- When you only need the phonetic algorithm
-- Cross-platform compatibility requirements
+**When to use each approach**:
+- **COF::Data** (preferred): When PATH is properly configured for BerkeleyDB
+- **COF::DataCompat** (fallback): When BerkeleyDB libraries cannot be resolved
+- **Cross-platform development**: Use DataCompat for maximum compatibility
 
 **Test files available**:
 - `test_complete_compat.pl` - Comprehensive compatibility tests
@@ -175,6 +185,22 @@ cpan install Try::Tiny
 cpan install Carp::Always
 ```
 
+**3. Configure BerkeleyDB PATH** (essential for COF::Data):
+
+```powershell
+# Add BerkeleyDB libraries to PATH for current session
+$env:PATH += ";C:\Strawberry\c\bin"
+
+# For permanent configuration, add to system PATH via:
+# System Properties → Advanced → Environment Variables → PATH
+# Add: C:\Strawberry\c\bin
+
+# Verify DB_File works correctly
+perl -MDB_File -e "print 'DB_File loaded successfully\n'"
+```
+
+> **Important**: Without proper PATH configuration, COF will fall back to `COF::DataCompat` with limited functionality. The PATH fix enables full database access and all original features.
+
 ### Clone Repository with LFS
 
 ```powershell
@@ -255,9 +281,9 @@ Modern additions while preserving original structure in flat hierarchy:
 
 ### 🔧 Compatibility Files
 
-**Problem**: The original COF depends on BerkeleyDB through Perl's `DB_File` module. On Windows systems with Strawberry Perl, this often fails due to missing or corrupted `DB_File.xs.dll`.
+**Primary Solution**: Fix BerkeleyDB PATH configuration (`$env:PATH += ";C:\Strawberry\c\bin"`) to enable full `COF::Data` functionality.
 
-**Solution**: We provide compatibility alternatives that maintain 100% algorithm accuracy:
+**Fallback Solution**: When PATH configuration is not feasible, we provide compatibility alternatives that maintain 100% algorithm accuracy:
 
 ```
 ├── lib/COF/DataCompat.pm       # Drop-in replacement for COF::Data
@@ -271,12 +297,17 @@ Modern additions while preserving original structure in flat hierarchy:
 └── util/spellchecker_utils_compat.pl  # CLI utilities (compat version)
 ```
 
+**Recommendation Hierarchy**:
+1. ✅ **COF::Data with PATH fix** (preferred): Full functionality with proper BerkeleyDB
+2. 🔧 **COF::DataCompat** (fallback): Algorithm compatibility with limited features
+3. ⚠️ **Manual workarounds** (deprecated): Use DataCompat instead
+
 **Key Features of Compatibility Version**:
 - ✅ **100% Algorithm Parity**: Identical phonetic results to original
 - ✅ **Cross-Platform**: Works on any Perl installation 
 - ✅ **Zero Additional Dependencies**: Uses only standard Perl modules
 - ⚠️ **Reduced Functionality**: Dictionary operations limited
-- 🎯 **Primary Use Case**: Phonetic algorithm integration
+- 🎯 **Primary Use Case**: Phonetic algorithm integration when full setup is not possible
 ├── [original files]            # All COF-2.16 files at root level
 ├── dict/                       # Enhanced dictionary folder
 │   ├── empty                   # Original placeholder (preserved)
@@ -346,6 +377,48 @@ perl tests/test_phonetic_perl.pl
 # word -> ("hash1", "hash2")
 # cjatâ -> ("A696", "c7696")
 ```
+
+## Troubleshooting
+
+### DB_File Issues on Windows
+
+**Error**: `Can't load 'auto/DB_File/DB_File.xs.dll'` or similar BerkeleyDB errors.
+
+**Root Cause**: Strawberry Perl includes BerkeleyDB libraries but they may not be in the system PATH.
+
+**Solution Steps**:
+
+1. **Verify the problem:**
+   ```powershell
+   perl -MDB_File -e "print 'OK\n'"
+   # Should show: Can't load 'auto/DB_File/DB_File.xs.dll'
+   ```
+
+2. **Locate BerkeleyDB libraries:**
+   ```powershell
+   dir C:\Strawberry\c\bin\*db*.dll
+   # Should find: libdb-6.2__.dll or similar
+   ```
+
+3. **Fix PATH for current session:**
+   ```powershell
+   $env:PATH += ";C:\Strawberry\c\bin"
+   perl -MDB_File -e "print 'DB_File loaded successfully\n'"
+   ```
+
+4. **Make permanent (recommended):**
+   - Open System Properties → Advanced → Environment Variables
+   - Edit user or system PATH variable
+   - Add: `C:\Strawberry\c\bin`
+   - Restart PowerShell/terminal
+
+5. **Verify fix:**
+   ```powershell
+   perl -I COF\lib COF\tests\test_suggestions.pl
+   # Should run without DataCompat fallbacks
+   ```
+
+**Alternative**: If PATH fix is not feasible, use `COF::DataCompat` as documented in compatibility sections above.
 
 ## Testing & Validation
 
