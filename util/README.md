@@ -47,6 +47,13 @@ WordIterator debugging and token analysis utility.
 - `--raw` - Show raw token data
 - `--help` - Display help information
 
+### `dataset_utils.pl`
+Test dataset generation utility for cross-platform validation.
+- `--generate-test-cases` - Generate comprehensive test dataset with real COF suggestions
+- `--format list|csv|json` - Output format (default: list)
+- `--output FILE` - Write to file instead of stdout
+- `--help` - Display help information
+
 ## Usage Examples
 
 ### Basic Spell Checking
@@ -62,6 +69,18 @@ perl util/spellchecker_utils.pl --file wordlist.txt --list
 
 # Generate phonetic hashes (for testing/development)
 perl util/spellchecker_utils.pl --generate-hashes --format=python furlan cjase lenghe
+```
+
+### Dataset Generation
+```bash
+# Generate comprehensive test dataset
+perl util/dataset_utils.pl --generate-test-cases
+
+# Export dataset in CSV format
+perl util/dataset_utils.pl --generate-test-cases --format csv --output test_data.csv
+
+# Generate JSON format for cross-platform validation
+perl util/dataset_utils.pl --generate-test-cases --format json --output suggestions_reference.json
 ```
 
 > **Note**: `spellchecker_utils.pl` automatically detects and uses COF::DataCompat 
@@ -127,6 +146,7 @@ This directory has been cleaned of temporary development files:
 - `spellchecker_utils.pl` now unified with automatic COF::Data/COF::DataCompat detection
 
 **Current Structure**:
+- `dataset_utils.pl` - Test dataset generation for cross-platform validation
 - `encoding_utils.pl` - Text encoding analysis and conversion
 - `radixtree_utils.pl` - RadixTree operations and diagnostics
 - `spellchecker_utils.pl` - Unified spell checking (with compatibility auto-detection)
