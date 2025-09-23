@@ -185,21 +185,45 @@ cpan install Try::Tiny
 cpan install Carp::Always
 ```
 
-**3. Configure BerkeleyDB PATH** (essential for COF::Data):
+**3. Configure Windows PATH** (essential for global perl access and COF::Data):
+
+#### Permanent PATH Configuration (Recommended)
+
+For system-wide and permanent access to perl commands and DB_File support:
 
 ```powershell
-# Add BerkeleyDB libraries to PATH for current session
-$env:PATH += ";C:\Strawberry\c\bin"
-
-# For permanent configuration, add to system PATH via:
-# System Properties → Advanced → Environment Variables → PATH
-# Add: C:\Strawberry\c\bin
-
-# Verify DB_File works correctly
-perl -MDB_File -e "print 'DB_File loaded successfully\n'"
+# Open System Properties (Run → sysdm.cpl) OR search "Environment Variables" in Start menu
+# Go to: Advanced tab → Environment Variables button
+# In "System Variables" section:
+#   - Find and select "Path" → Click "Edit..."
+#   - Click "New" and add: C:\Strawberry\perl\bin
+#   - Click "New" and add: C:\Strawberry\c\bin
+#   - Click "OK" to save all dialogs
+# Restart terminal to apply changes
 ```
 
-> **Important**: Without proper PATH configuration, COF will fall back to `COF::DataCompat` with limited functionality. The PATH fix enables full database access and all original features.
+#### Temporary Session Configuration
+
+```powershell
+# Add to PATH for current PowerShell session only
+$env:PATH += ";C:\Strawberry\perl\bin;C:\Strawberry\c\bin"
+```
+
+#### Verification
+
+```powershell
+# Test Perl global access
+perl --version
+
+# Test DB_File module availability
+perl -MDB_File -e "print 'DB_File loaded successfully\n'"
+
+# Test COF functionality
+cd COF
+perl script\cof_oo_cli.pl
+```
+
+> **Important**: Without proper PATH configuration, `perl` command won't work globally and COF will encounter DB_File errors, falling back to `COF::DataCompat` with limited functionality. The permanent PATH fix enables full database access and all original COF features.
 
 ### Clone Repository with LFS
 

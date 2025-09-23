@@ -181,6 +181,59 @@ The `util/` directory contains comprehensive support functions documented in `ut
 - Validate file paths and line endings across platforms
 - Maintain compatibility with original COF architecture
 
+### Windows Environment Setup
+
+**Permanent Strawberry Perl PATH Configuration**
+
+For global and permanent access to Perl commands, add Strawberry Perl to Windows system PATH:
+
+1. **Open System Environment Variables**:
+   - Press `Win + R`, type `sysdm.cpl`, press Enter
+   - Click "Environment Variables..." button
+   - Or search "Environment Variables" in Start menu
+
+2. **Edit System PATH**:
+   - In "System Variables" section, find and select "Path"
+   - Click "Edit..." button
+   - Click "New" and add: `C:\Strawberry\perl\bin`
+   - Click "New" again and add: `C:\Strawberry\c\bin` (for DB_File support)
+   - Click "OK" to save all dialogs
+
+3. **Restart Terminal**:
+   - Close all PowerShell/CMD windows
+   - Open new terminal and verify: `perl --version`
+
+**DB_File Dependency Fix**
+
+The COF project requires DB_File module for Berkeley DB access. If you encounter `DB_File` errors:
+
+**Problem**: `Can't locate loadable object for module DB_File`
+**Solution**: Ensure `C:\Strawberry\c\bin` is in PATH (step 2 above includes this)
+
+**Verification Commands**:
+```powershell
+# Test Perl installation
+perl --version
+
+# Test DB_File availability
+perl -e "use DB_File; print 'DB_File OK\n';"
+
+# Test COF CLI functionality
+cd COF
+perl script\cof_oo_cli.pl
+```
+
+**Alternative PATH Setting (temporary session)**:
+```powershell
+# For current session only (not permanent)
+$env:PATH += ";C:\Strawberry\perl\bin;C:\Strawberry\c\bin"
+```
+
+**Troubleshooting**:
+- If `perl` command not found: Strawberry Perl not installed or PATH incorrect
+- If `DB_File` errors persist: `C:\Strawberry\c\bin` missing from PATH
+- If COF modules not found: Run from COF directory or check `@INC` paths
+
 ---
 
 *This document ensures consistent, high-quality contributions while preserving the historical and technical integrity of the original COF implementation.*
