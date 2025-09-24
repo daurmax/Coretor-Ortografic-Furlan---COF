@@ -10,16 +10,17 @@ The test suite is organized into specialized test files that comprehensively cov
 
 | File | Tests | Purpose |
 |------|--------|---------|
-| `test_core_functionality.pl` | 35 | Database connectivity, basic SpellChecker operations |
+| `test_core_functionality.pl` | 46 | Database connectivity, basic SpellChecker operations |
 | `test_core_functionality_compat.pl` | 18 | COF::DataCompat compatibility validation and testing |
-| `test_components.pl` | 21 | FastChecker and RTChecker component testing |
-| `test_utilities.pl` | 22 | Encoding, CLI validation, legacy data handling |
-| `test_worditerator.pl` | 21 | WordIterator functionality and text processing |
-| `test_phonetic_algorithm.pl` | 203 | Comprehensive phonetic algorithm testing (95 words × 2 tests + 13 robustness tests) |
+| `test_components.pl` | 22 | FastChecker and RTChecker component testing |
+| `test_radix_tree.pl` | 21 | RadixTree functionality, suggestions, performance testing |
+| `test_utilities.pl` | 37 | Encoding, CLI validation, legacy data handling |
+| `test_worditerator.pl` | 67 | WordIterator functionality and text processing |
+| `test_phonetic_algorithm.pl` | 209 | Comprehensive phonetic algorithm testing (98 words × 2 tests + 13 robustness tests) |
 
 ### Test Runner
 
-- **`run_all_tests.pl`** - Unified test suite runner for all 6 test files
+- **`run_all_tests.pl`** - Unified test suite runner for all 7 test files
 
 ## Running Tests
 
@@ -28,6 +29,7 @@ The test suite is organized into specialized test files that comprehensively cov
 perl test_core_functionality.pl
 perl test_core_functionality_compat.pl
 perl test_components.pl  
+perl test_radix_tree.pl
 perl test_utilities.pl
 perl test_worditerator.pl
 perl test_phonetic_algorithm.pl

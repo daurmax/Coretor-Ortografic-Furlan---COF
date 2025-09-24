@@ -25,11 +25,13 @@ Spell checking and suggestion analysis utility.
 - `--compat` - Force COF::DataCompat mode (bypass COF::Data auto-detection)
 
 ### `radixtree_utils.pl`  
-RadixTree suggestion debugging utility.
-- `--word WORD` - Show radix tree suggestions
+RadixTree suggestion debugging and test dataset generation utility.
+- `--word WORD` - Show radix tree suggestions for a single word
 - `--file FILE` - Batch process words from file
-- `--format list|array|json` - Output format
+- `--format list|array|json` - Output format (default: list)
 - `--list` - Show suggestions only
+- `--generate-tests` - Generate test dataset from legacy vocabulary
+- `--sample N` - Use sample of N words (default: 100, max: 1000)
 
 ### `encoding_utils.pl`
 Text encoding inspection and debugging utility.
@@ -45,13 +47,6 @@ WordIterator debugging and token analysis utility.
 - `--file FILE` - Process file for token analysis
 - `--limit N` - Limit output to N tokens
 - `--raw` - Show raw token data
-- `--help` - Display help information
-
-### `dataset_utils.pl`
-Test dataset generation utility for cross-platform validation.
-- `--generate-test-cases` - Generate comprehensive test dataset with real COF suggestions
-- `--format list|csv|json` - Output format (default: list)
-- `--output FILE` - Write to file instead of stdout
 - `--help` - Display help information
 
 ## Usage Examples
@@ -71,26 +66,13 @@ perl util/spellchecker_utils.pl --file wordlist.txt --list
 perl util/spellchecker_utils.pl --generate-hashes --format=python furlan cjase lenghe
 ```
 
-### Dataset Generation
+### RadixTree Analysis and Test Dataset Generation
 ```bash
-# Generate comprehensive test dataset
-perl util/dataset_utils.pl --generate-test-cases
-
-# Export dataset in CSV format
-perl util/dataset_utils.pl --generate-test-cases --format csv --output test_data.csv
-
-# Generate JSON format for cross-platform validation
-perl util/dataset_utils.pl --generate-test-cases --format json --output suggestions_reference.json
-```
-
-> **Note**: `spellchecker_utils.pl` automatically detects and uses COF::DataCompat 
-> (SDBM-based) if COF::Data (BerkeleyDB-based) is unavailable. This provides 
-> seamless compatibility across different Perl installations.
-
-### RadixTree Analysis
-```bash
-# Get RadixTree suggestions
+# Get RadixTree suggestions for a word
 perl util/radixtree_utils.pl --word cjupe --format json
+
+# Generate test dataset from legacy vocabulary
+perl util/radixtree_utils.pl --generate-tests --sample 50
 
 # Batch process with list output
 perl util/radixtree_utils.pl --file words.txt --list
@@ -146,9 +128,8 @@ This directory has been cleaned of temporary development files:
 - `spellchecker_utils.pl` now unified with automatic COF::Data/COF::DataCompat detection
 
 **Current Structure**:
-- `dataset_utils.pl` - Test dataset generation for cross-platform validation
 - `encoding_utils.pl` - Text encoding analysis and conversion
-- `radixtree_utils.pl` - RadixTree operations and diagnostics
+- `radixtree_utils.pl` - RadixTree operations, diagnostics and test dataset generation
 - `spellchecker_utils.pl` - Unified spell checking (with compatibility auto-detection)
 - `worditerator_utils.pl` - Text tokenization and word iteration
 - `README.md` - This documentation

@@ -39,7 +39,7 @@ This repository preserves Franz Feregot's original COF implementation with moder
 
 **Enhancements Added**:
 - Complete Friulian dictionary database with Git LFS
-- Comprehensive test suite with 76 validation cases
+- Comprehensive test suite with 402 validation cases covering all components
 - Documentation and contribution guidelines
 - Repository modernization and GitHub integration
 - Continuous Integration with automated testing on every commit
@@ -90,9 +90,10 @@ my ($primo, $secondo) = COF::DataCompat::phalg_furlan('furlan');
 - **Cross-platform development**: Use DataCompat for maximum compatibility
 
 **Test files available**:
-- `test_complete_compat.pl` - Comprehensive compatibility tests
 - `tests/test_core_functionality_compat.pl` - Core functionality with compat version
-- `util/spellchecker_utils_compat.pl` - Compatible utilities
+- `tests/test_radix_tree.pl` - RadixTree functionality and performance validation
+- `tests/run_all_tests.pl` - Complete test suite runner (402 test cases)
+- `util/spellchecker_utils.pl` - Spell checking utilities (auto-detects compatibility mode)
 
 ### Core Components
 
@@ -299,9 +300,7 @@ Modern additions while preserving original structure in flat hierarchy:
 ├── .github/                    # GitHub integration
 │   └── copilot-instructions.md # AI assistance guidelines
 ├── lib/COF/DataCompat.pm       # 🆕 DB_File-free compatible version
-├── test_complete_compat.pl     # 🆕 Comprehensive compatibility tests
-├── test_data_compat.pl         # 🆕 DataCompat vs Data comparison
-└── util/spellchecker_utils_compat.pl  # 🆕 Compatible utilities
+└── tests/test_core_functionality_compat.pl  # 🆕 DataCompat compatibility tests
 
 ### 🔧 Compatibility Files
 
@@ -316,9 +315,9 @@ Modern additions while preserving original structure in flat hierarchy:
 │                               # - No BerkeleyDB dependency
 │                               # - Limited dictionary features
 ├── tests/test_core_functionality_compat.pl  # Compat version tests
-├── test_complete_compat.pl     # Full compatibility test suite
-├── test_data_compat.pl         # Side-by-side comparison tests  
-└── util/spellchecker_utils_compat.pl  # CLI utilities (compat version)
+├── tests/test_radix_tree.pl    # RadixTree functionality tests (21 cases)
+├── tests/run_all_tests.pl      # Complete test suite runner (402 cases)
+└── util/spellchecker_utils.pl  # CLI utilities (auto-detects compatibility)
 ```
 
 **Recommendation Hierarchy**:
