@@ -15,15 +15,12 @@ Runs every consolidated test file in this directory. This is the ONLY entrypoint
 to execute the full test suite. No test runners are kept in `util/`.
 
 Included suites:
-- SpellChecker (core spelling + suggestions)
-- RadixTree (RT structure + lookup + suggestions)
-- Phonetic hashing (phalg_furlan correctness)
 - WordIterator (tokenization + Unicode + edge cases)
-- Database (key/value lookups, error handling, integrity)
-- Encoding (UTF-8 handling + corruption detection)
-- FastChecker (state + performance-related invariants)
-- RTChecker (memory + suggestion generation)
-- CLI parameter validation (error surface + I/O)
+- Core Functionality (Database, SpellChecker, phonetic algorithms)
+- Components (FastChecker and RTChecker components)
+- RadixTree (RT structure + lookup + suggestions + performance)
+- Utilities (Encoding, CLI validation, legacy data)
+- Phonetic Algorithm (phalg_furlan correctness + comprehensive validation)
 
 =head1 USAGE
 
@@ -41,6 +38,7 @@ my @test_suites = (
     { file => 'test_worditerator.pl',           name => 'WordIterator',        desc => 'Iterator logic, Unicode, edge cases' },
     { file => 'test_core_functionality.pl',     name => 'Core Functionality',  desc => 'Database, SpellChecker, phonetic algorithms' },
     { file => 'test_components.pl',             name => 'Components',          desc => 'FastChecker and RTChecker components' },
+    { file => 'test_radix_tree.pl',             name => 'RadixTree',           desc => 'RadixTree functionality, suggestions, performance' },
     { file => 'test_utilities.pl',              name => 'Utilities',           desc => 'Encoding, CLI validation, legacy data' },
     { file => 'test_phonetic_algorithm.pl',     name => 'Phonetic Algorithm',  desc => 'Comprehensive phonetic algorithm validation' },
 );
