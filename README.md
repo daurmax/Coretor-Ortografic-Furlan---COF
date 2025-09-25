@@ -298,6 +298,15 @@ Modern additions while preserving original structure in flat hierarchy:
 ├── AGENTS.md                   # Contribution guidelines  
 ├── .gitattributes              # Git LFS configuration
 ├── .github/                    # GitHub integration
+├── testing/                    # Testing and validation tools
+│   ├── README.md               # Testing suite documentation
+│   ├── ground_truth/           # COF ground truth generation
+│   │   ├── generate_ground_truth.py # Reference result generator
+│   │   └── results/            # Generated ground truth files
+│   ├── validation/             # Compatibility validation
+│   │   ├── validate_compatibility.py # Validation suite
+│   │   └── reports/            # Validation reports
+│   └── fixtures/               # Test data and word lists
 │   └── copilot-instructions.md # AI assistance guidelines
 ├── lib/COF/DataCompat.pm       # 🆕 DB_File-free compatible version
 └── tests/test_core_functionality_compat.pl  # 🆕 DataCompat compatibility tests
@@ -373,9 +382,9 @@ The original COF distribution included only an `empty` placeholder in `dict/`. T
 
 ## Testing Framework
 
-The repository includes a comprehensive test suite (76 total tests) validating COF functionality:
+The repository includes both internal test suites for COF validation and external compatibility testing tools for modern spell checker implementations.
 
-### Test Suites
+### Internal Test Suites (`tests/`)
 
 | Test Suite | Tests | Coverage |
 |------------|-------|----------|
@@ -384,11 +393,49 @@ The repository includes a comprehensive test suite (76 total tests) validating C
 | **KeyValueDatabase** | 15 | Database lookups, edge cases |
 | **Phonetic Algorithm** | 47 | phalg_furlan hash algorithm validation |
 
-### Test Coverage Areas
+#### Test Coverage Areas
 - **Basic Functionality**: Word existence checking, suggestion generation
 - **Edge Cases**: Empty keys, non-existent entries, invalid inputs
 - **Database Integration**: Phonetic, error, frequency, elision lookups
 - **Character Handling**: UTF-8 support for Friulian characters (þ)
+
+### Compatibility Testing Suite (`testing/`)
+
+The testing framework provides tools for validating other Friulian spell checker implementations against COF as the authoritative reference:
+
+#### Ground Truth Generation (`testing/ground_truth/`)
+- **`generate_ground_truth.py`**: Creates reference results using COF Perl script
+- **Input Support**: JSON test cases, plain text word lists, or default Friulian words
+- **Output Formats**: JSON (machine-readable), TSV (analysis), and statistics files
+- **Batch Processing**: Handles large word lists efficiently
+
+#### Compatibility Validation (`testing/validation/`)
+- **`validate_compatibility.py`**: Compares other implementations against COF results
+- **Supported Checkers**: FurlanSpellChecker (Python), custom executables
+- **Metrics**: Correctness matches, suggestion similarity, overall compatibility
+- **Detailed Reports**: Markdown reports with failed cases and improvement recommendations
+
+#### Usage Examples
+```bash
+# Generate ground truth from test words
+cd testing/ground_truth
+python generate_ground_truth.py ../fixtures/test_words.txt
+
+# Validate FurlanSpellChecker compatibility
+cd ../validation
+python validate_compatibility.py furlanspellchecker
+
+# View compatibility report
+cat reports/furlanspellchecker_compatibility_report_*.md
+```
+
+**Key Benefits**:
+- **Objective Validation**: Real COF results, not mock/fake data
+- **Regression Testing**: Detect algorithm changes in implementations
+- **Performance Benchmarking**: Compare speed and accuracy across implementations
+- **Development Guidance**: Identify specific areas needing improvement
+
+See [`testing/README.md`](testing/README.md) for comprehensive documentation.
 - **Algorithm Validation**: Edit-distance calculations, ranking systems
 - **Edge Cases**: Start-of-word consonants, special endings
 
