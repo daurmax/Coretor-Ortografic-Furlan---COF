@@ -18,6 +18,7 @@ my $from_file = '';
 my $format = 'list';  # list | array | json
 my $list_only = 0;
 my $generate_tests = 0;
+my $generate_ground_truth = 0;
 my $sample_size = 50;
 
 GetOptions(
@@ -27,16 +28,19 @@ GetOptions(
     'format=s'      => \$format,
     'list'          => \$list_only,
     'generate-tests' => \$generate_tests,
+    'generate-ground-truth' => \$generate_ground_truth,
     'sample=i'      => \$sample_size,
 ) or die "Invalid options\n";
 
 if ($help) { 
     print "Usage: $0 --word WORD | --file FILE [--format list|array|json]\n";
     print "       $0 --generate-tests [--sample N] [--format json|perl]\n";
+    print "       $0 --generate-ground-truth [--format json|perl]\n";
     print "\n";
     print "Options:\n";
-    print "  --generate-tests  Generate test dataset from legacy words\n";
-    print "  --sample N        Sample size for test generation (default: 50)\n";
+    print "  --generate-tests       Generate test dataset from legacy words\n";
+    print "  --generate-ground-truth Generate ground truth for FurlanSpellChecker test words\n";
+    print "  --sample N             Sample size for test generation (default: 50)\n";
     exit 0;
 }
 
@@ -47,6 +51,12 @@ my $rt_checker = $data->get_words_rt();
 # Handle test generation mode
 if ($generate_tests) {
     generate_test_dataset($rt_checker, $sample_size, $format);
+    exit 0;
+}
+
+# Handle ground truth generation mode
+if ($generate_ground_truth) {
+    generate_furlanspellchecker_ground_truth($rt_checker, $format);
     exit 0;
 }
 
@@ -190,4 +200,94 @@ sub generate_misspelled_variants {
     }
     
     return @variants;
+}
+
+sub generate_furlanspellchecker_ground_truth {
+    my ($rt_checker, $format) = @_;
+    $format ||= 'perl';
+    
+    # Additional test words from FurlanSpellChecker that need ground truth
+    my @additional_test_words = (
+        # Extended test cases from FurlanSpellChecker
+        'ostaria', 'anell', 'scuela', 'gjave', 'aghe', 'plui', 'prossim', 'lontam',
+        'grant', 'piçul', 'bon', 'catîf', 'alt', 'bas', 'furlane', 'furlani', 
+        'furlans', 'furlanà', 'furlanâ',
+        
+        # Edge case test words
+        'cjàse', 'çi', 'òs', 'ûs', 'A', 'aa', 'xyz', 'fu', 'ab',
+    );
+    
+    print "=== COF RadixTree Ground Truth Generator ===\n" unless $format eq 'json';
+    print "COF RadixTree initialized successfully\n" unless $format eq 'json';
+    
+    # Generate ground truth for each word
+    my %ground_truth;
+    my $processed = 0;
+    
+    for my $word (@additional_test_words) {
+        print "Processing '$word'... " unless $format eq 'json';
+        
+        my @suggestions = eval { $rt_checker->get_words_ed1($word) };
+        if ($@) {
+            print "ERROR: $@\n" unless $format eq 'json';
+            $ground_truth{$word} = { 
+                error => $@,
+                suggestions => []
+            };
+        } else {
+            print "got " . scalar(@suggestions) . " suggestions\n" unless $format eq 'json';
+            $ground_truth{$word} = {
+                suggestions => \@suggestions,
+                count => scalar(@suggestions)
+            };
+        }
+        $processed++;
+    }
+    
+    # Output results
+    if ($format eq 'json') {
+        # JSON output for programmatic consumption
+        my $json = JSON::PP->new->pretty->utf8;
+        print $json->encode(\%ground_truth);
+    } else {
+        # Human readable output for Perl test integration
+        print "\n=== Ground Truth Results (Perl format) ===\n";
+        print "# Generated test cases for COF test_radix_tree.pl\n";
+        print "# Source: FurlanSpellChecker additional test cases\n";
+        print "# Generated: " . localtime() . "\n\n";
+        
+        print "my \%EXTENDED_RADIX_TEST_CASES = (\n";
+        for my $word (sort keys %ground_truth) {
+            my $result = $ground_truth{$word};
+            if ($result->{error}) {
+                print "    # '$word' => ERROR: $result->{error}\n";
+            } else {
+                my @suggestions = @{$result->{suggestions}};
+                if (@suggestions) {
+                    # Properly escape and format suggestions
+                    my @escaped_suggestions;
+                    for my $suggestion (@suggestions) {
+                        # Escape single quotes in suggestions
+                        $suggestion =~ s/'/\\'/g;
+                        push @escaped_suggestions, $suggestion;
+                    }
+                    my $suggestions_str = join("', '", @escaped_suggestions);
+                    print "    '$word' => ['$suggestions_str'],\n";
+                } else {
+                    print "    '$word' => [],\n";
+                }
+            }
+        }
+        print ");\n\n";
+        
+        print "# Test case count by category:\n";
+        my $with_suggestions = grep { @{$ground_truth{$_}->{suggestions}} > 0 } keys %ground_truth;
+        my $without_suggestions = grep { @{$ground_truth{$_}->{suggestions}} == 0 } keys %ground_truth;
+        my $with_errors = grep { $ground_truth{$_}->{error} } keys %ground_truth;
+        
+        print "# - Words with suggestions: $with_suggestions\n";
+        print "# - Words without suggestions: $without_suggestions\n";
+        print "# - Words with errors: $with_errors\n";
+        print "# - Total processed: $processed\n";
+    }
 }
