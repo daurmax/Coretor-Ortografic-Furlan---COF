@@ -17,14 +17,15 @@ to execute the full test suite. No test runners are kept in `util/`.
 Included suites:
 - Core & Database (Core functionality, compatibility layer, database integration - CONSOLIDATED)
 - WordIterator (tokenization + Unicode + edge cases)
-- Components (FastChecker and RTChecker components)
+- Suggestions (Component integration + suggestion algorithm tests - CONSOLIDATED)
 - RadixTree (RT structure + lookup + suggestions + performance)
-- Suggestions (Suggestion algorithm testing)
 - Utilities (Encoding, CLI validation, legacy data)
 - Phonetic Algorithm (phalg_furlan correctness + comprehensive validation)
 
-Note: test_core.pl consolidates test_core_functionality.pl, test_core_functionality_compat.pl,
-and test_database_integration.pl. Legacy files marked as (LEGACY) will be removed after validation.
+Consolidation Notes:
+- test_core.pl merges: test_core_functionality.pl, test_core_functionality_compat.pl, test_database_integration.pl
+- test_suggestions.pl merges: test_components.pl, original test_suggestions.pl
+Legacy files marked as (LEGACY) will be removed after validation.
 
 =head1 USAGE
 
@@ -39,15 +40,17 @@ Returns exit code 0 if all suites pass, 1 otherwise.
 =cut
 
 my @test_suites = (
-    { file => 'test_core.pl',                   name => 'Core & Database',     desc => 'Core functionality, compatibility, database integration (88 tests)' },
-    { file => 'test_worditerator.pl',           name => 'WordIterator',        desc => 'Iterator logic, Unicode, edge cases' },
-    { file => 'test_core_functionality_compat.pl', name => 'Core Compat (LEGACY)', desc => 'COF::DataCompat compatibility validation' },
-    { file => 'test_database_integration.pl',   name => 'Database (LEGACY)',   desc => 'Database integration tests' },
-    { file => 'test_components.pl',             name => 'Components',          desc => 'FastChecker and RTChecker components' },
-    { file => 'test_radix_tree.pl',             name => 'RadixTree',           desc => 'RadixTree functionality, suggestions, performance' },
-    { file => 'test_utilities.pl',              name => 'Utilities',           desc => 'Encoding, CLI validation, legacy data' },
-    { file => 'test_phonetic_algorithm.pl',     name => 'Phonetic Algorithm',  desc => 'Comprehensive phonetic algorithm validation' },
-    { file => 'test_suggestions.pl',            name => 'Suggestions',         desc => 'Suggestion algorithm testing' },
+    { file => 'test_core.pl',                      name => 'Core & Database',          desc => 'Core functionality, compatibility, database integration (88 tests + 41 file checks = 129 total)' },
+    { file => 'test_worditerator.pl',              name => 'WordIterator',             desc => 'Iterator logic, Unicode, edge cases' },
+    { file => 'test_suggestions.pl',               name => 'Suggestions & Components', desc => 'Component integration + suggestion algorithm (50 tests: 23 components + 27 suggestions)' },
+    { file => 'test_radix_tree.pl',                name => 'RadixTree',                desc => 'RadixTree functionality, suggestions, performance' },
+    { file => 'test_utilities.pl',                 name => 'Utilities',                desc => 'Encoding, CLI validation, legacy data' },
+    { file => 'test_phonetic_algorithm.pl',        name => 'Phonetic Algorithm',       desc => 'Comprehensive phonetic algorithm validation' },
+    # LEGACY FILES - marked for removal after validation
+    { file => 'test_core_functionality.pl',        name => 'Core (LEGACY)',            desc => 'Basic initialization [MERGED INTO test_core.pl]' },
+    { file => 'test_core_functionality_compat.pl', name => 'Core Compat (LEGACY)',     desc => 'Compatibility validation [MERGED INTO test_core.pl]' },
+    { file => 'test_database_integration.pl',      name => 'Database (LEGACY)',        desc => 'Database integration [MERGED INTO test_core.pl]' },
+    { file => 'test_components.pl',                name => 'Components (LEGACY)',      desc => 'Component tests [MERGED INTO test_suggestions.pl]' },
 );
 
 # Ensure we are in the tests directory so relative paths resolve
