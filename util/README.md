@@ -59,6 +59,24 @@ COF database inspection and diagnostic utility.
 - `--sample N` - Show N sample entries per database (default: 20)
 - `--help` - Display full documentation
 
+### `nondeterminism_utils.pl`
+Non-deterministic suggestion ordering detection utility.
+- `--iterations N` - Number of iterations per word (default: 20)
+- `--top N` - Number of top suggestions to check (default: 10)
+- `--verbose` - Show all iterations (default: summary only)
+- `--help` - Display help message
+
+Detects non-deterministic ordering caused by hash iteration in COF::SpellChecker::suggest_raw.
+Reports variant frequencies, position analysis, and identifies stable vs varying positions.
+
+### `suggestion_ranking_utils.pl`
+Suggestion ranking ground truth generation utility.
+- `--verify-encoding` - Generate test cases with encoding verification
+- `--latin1-escapes` - Output with \xNN escapes for Latin-1 characters
+- `--help` - Display help message
+
+Generates ground truth data for suggestion ranking tests with proper encoding handling.
+
 ## Usage Examples
 
 ### Basic Spell Checking
@@ -126,6 +144,30 @@ perl util/database_utils.pl --frequency --show-top 20
 perl util/database_utils.pl --sample 50
 ```
 
+### Non-Determinism Detection
+```bash
+# Check a single word for non-deterministic ordering
+perl util/nondeterminism_utils.pl scuela
+
+# Check multiple words with verbose output
+perl util/nondeterminism_utils.pl --verbose scuela prossim grant
+
+# Run 50 iterations and check top 15 suggestions
+perl util/nondeterminism_utils.pl --iterations 50 --top 15 scuela
+
+# Quick batch check of known problematic words
+perl util/nondeterminism_utils.pl scuela prossim grant
+```
+
+### Suggestion Ranking Ground Truth
+```bash
+# Generate test cases with encoding verification
+perl util/suggestion_ranking_utils.pl --verify-encoding
+
+# Generate with Latin-1 hex escapes (for test files)
+perl util/suggestion_ranking_utils.pl --latin1-escapes
+```
+
 ## Development Guidelines
 
 - All utilities follow the `*_utils.pl` naming convention
@@ -161,8 +203,10 @@ This directory has been cleaned of temporary development files:
 - `database_utils.pl` - COF database inspection and diagnostic utility (relocated from tests/)
 - `dataset_utils.pl` - Dataset processing and validation utilities
 - `encoding_utils.pl` - Text encoding analysis and conversion
+- `nondeterminism_utils.pl` - Non-deterministic suggestion ordering detection and analysis
 - `radixtree_utils.pl` - RadixTree operations, diagnostics and test dataset generation
 - `spellchecker_utils.pl` - Unified spell checking (with compatibility auto-detection)
+- `suggestion_ranking_utils.pl` - Suggestion ranking ground truth generation with encoding support
 - `worditerator_utils.pl` - Text tokenization and word iteration
 - `README.md` - This documentation
 
