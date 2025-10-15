@@ -16,6 +16,13 @@ The test suite is organized into 6 specialized test files that comprehensively c
 | `test_radix_tree.pl` | 72 | RadixTree ED1 suggestions, ground truth verification, performance tests |
 | `test_utilities.pl` | 37 | Encoding, CLI validation, legacy vocabulary handling |
 | `test_phonetic_algorithm.pl` | 231 | Comprehensive phonetic algorithm testing (98 words × 2 tests + 13 robustness + 28 parity tests) |
+| `test_known_bugs.pl` | 9 | Historical documentation of known bugs (non-deterministic suggestion ordering for tied suggestions) |
+
+### Special Test Files
+
+| File | Tests | Purpose |
+|------|--------|---------|
+| `test_known_bugs.pl` | 9 | Documents known bugs preserved for historical reference (non-deterministic hash iteration) |
 
 ### Test Runner
 
@@ -31,6 +38,7 @@ perl test_suggestions.pl
 perl test_radix_tree.pl
 perl test_utilities.pl
 perl test_phonetic_algorithm.pl
+perl test_known_bugs.pl
 ```
 
 ### Complete Test Suite (Recommended)
@@ -49,7 +57,7 @@ All tests follow these principles:
 
 ## Test Results Summary
 
-- **Total Tests**: 586 tests across 6 consolidated test files
+- **Total Tests**: 595 tests across 7 test files (6 main + 1 special)
 - **Test Breakdown**:
   - Core & Database: 129 tests (initialization, compatibility, database integration)
   - WordIterator: 67 tests (tokenization, Unicode, edge cases)
@@ -57,6 +65,7 @@ All tests follow these principles:
   - RadixTree: 72 tests (ED1 suggestions with ground truth verification)
   - Utilities: 37 tests (encoding, CLI validation, legacy data)
   - Phonetic Algorithm: 231 tests (98 words × 2 hashes + 13 robustness + 28 parity tests)
+  - Known Bugs: 9 tests (documents non-deterministic behavior for historical preservation)
 - **Expected Results**: 5/6 suites pass (1 pre-existing failure in test_utilities.pl line 24)
 - **Database Dependencies**: Core tests require COF dictionaries in `../dict/` directory
 - **Component Dependencies**: Component tests handle missing FastChecker/RTChecker gracefully
@@ -70,6 +79,16 @@ This streamlined structure (6 test files, down from 9 previously) provides:
 - **Improved Maintainability**: Clear scope definitions with POD documentation
 - **Enhanced Clarity**: Consolidated test files eliminate redundant imports and setup code
 - **Clean Directory**: Follows AGENTS.md guidelines for test organization
+
+## Special Notes on test_known_bugs.pl
+
+This test file serves as **historical documentation** of known bugs in the COF codebase:
+
+- **Non-Deterministic Ordering**: Documents hash iteration order causing random suggestion ordering for tied results
+- **Root Cause Analysis**: Includes detailed analysis of peso structure and hash iteration in `suggest_raw`
+- **Valid Variants**: Documents all valid orderings that COF may produce (e.g., 'scuela' positions 4-5)
+- **Purpose**: Preserves ground truth behavior at time of writing, alerts to future changes in codebase behavior
+- **Not a Bug Report**: This is accepted behavior documentation, not a request for fixes
 
 ## Quality Guidelines
 
