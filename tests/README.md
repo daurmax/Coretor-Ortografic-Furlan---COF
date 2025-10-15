@@ -4,42 +4,36 @@ This directory contains the consolidated test suite for the COF (Coretor Ortogra
 
 ## Test Structure
 
-The test suite is organized into specialized test files that comprehensively cover all COF functionality:
+The test suite is organized into 6 specialized test files that comprehensively cover all COF functionality:
 
 ### Core Test Files
 
 | File | Tests | Purpose |
 |------|--------|---------|
-| `test_core_functionality.pl` | 36 | Database connectivity, basic SpellChecker operations |
-| `test_core_functionality_compat.pl` | 17 | COF::DataCompat compatibility validation and testing |
-| `test_components.pl` | 23 | FastChecker and RTChecker component testing |
-| `test_database_integration.pl` | 35 | Database integration and data access |
+| `test_core.pl` | 129 | Core functionality, compatibility layer, database integration (88 core tests + 41 file checks) |
+| `test_worditerator.pl` | 67 | WordIterator tokenization, Unicode handling, edge cases |
+| `test_suggestions.pl` | 50 | Component integration (FastChecker/RTChecker) and suggestion algorithm testing |
+| `test_radix_tree.pl` | 72 | RadixTree ED1 suggestions, ground truth verification, performance tests |
+| `test_utilities.pl` | 37 | Encoding, CLI validation, legacy vocabulary handling |
 | `test_phonetic_algorithm.pl` | 231 | Comprehensive phonetic algorithm testing (98 words × 2 tests + 13 robustness + 28 parity tests) |
-| `test_radix_tree.pl` | 72 | RadixTree ED1 suggestions, ground truth verification |
-| `test_suggestions.pl` | 27 | Suggestion algorithm testing |
-| `test_utilities.pl` | 22 | Encoding, CLI validation, utility functions |
-| `test_worditerator.pl` | 33 | WordIterator functionality and text processing |
 
 ### Test Runner
 
-- **`run_all_tests.pl`** - Unified test suite runner for all 9 test files
+- **`run_all_tests.pl`** - Unified test suite runner for all 6 test files
 
 ## Running Tests
 
 ### Individual Test Files
 ```bash
-perl test_core_functionality.pl
-perl test_core_functionality_compat.pl
-perl test_components.pl
-perl test_database_integration.pl
-perl test_phonetic_algorithm.pl
-perl test_radix_tree.pl
-perl test_suggestions.pl
-perl test_utilities.pl
+perl test_core.pl
 perl test_worditerator.pl
+perl test_suggestions.pl
+perl test_radix_tree.pl
+perl test_utilities.pl
+perl test_phonetic_algorithm.pl
 ```
 
-### Complete Test Suite
+### Complete Test Suite (Recommended)
 ```bash
 perl run_all_tests.pl
 ```
@@ -55,23 +49,27 @@ All tests follow these principles:
 
 ## Test Results Summary
 
-- **Total Tests**: 496 tests across 9 test files
-- **Phonetic Algorithm**: 231 tests for exact Perl-Python parity (98 words × 2 hashes + 13 robustness + 28 parity tests)
-- **RadixTree**: 72 tests for ED1 suggestions with ground truth verification
-- **Core Functionality**: 88 tests across core, compatibility, and database integration
-- **Other Components**: 105 tests for suggestions, utilities, word iteration, and component integration
-- **Expected Results**: All tests should pass with proper COF installation
+- **Total Tests**: 586 tests across 6 consolidated test files
+- **Test Breakdown**:
+  - Core & Database: 129 tests (initialization, compatibility, database integration)
+  - WordIterator: 67 tests (tokenization, Unicode, edge cases)
+  - Suggestions & Components: 50 tests (component integration + suggestion algorithm)
+  - RadixTree: 72 tests (ED1 suggestions with ground truth verification)
+  - Utilities: 37 tests (encoding, CLI validation, legacy data)
+  - Phonetic Algorithm: 231 tests (98 words × 2 hashes + 13 robustness + 28 parity tests)
+- **Expected Results**: 5/6 suites pass (1 pre-existing failure in test_utilities.pl line 24)
 - **Database Dependencies**: Core tests require COF dictionaries in `../dict/` directory
 - **Component Dependencies**: Component tests handle missing FastChecker/RTChecker gracefully
+- **Execution Time**: Full suite completes in ~15 seconds on standard hardware
 
-## Maintenance
+## Consolidation Benefits
 
-This consolidated structure replaces the previous 17+ individual test files, providing:
-- Better organization and maintainability
-- Logical grouping of related functionality
-- Reduced test suite complexity
-- Improved test execution performance
-- Cleaner directory structure following AGENTS.md guidelines
+This streamlined structure (6 test files, down from 9 previously) provides:
+- **Better Organization**: Logical grouping of related functionality
+- **Reduced Complexity**: Fewer files to maintain while preserving all test coverage
+- **Improved Maintainability**: Clear scope definitions with POD documentation
+- **Enhanced Clarity**: Consolidated test files eliminate redundant imports and setup code
+- **Clean Directory**: Follows AGENTS.md guidelines for test organization
 
 ## Quality Guidelines
 
@@ -94,10 +92,10 @@ This consolidated structure replaces the previous 17+ individual test files, pro
 
 ## Compatibility Note
 
-The `test_core_functionality_compat.pl` test validates basic COF::DataCompat functionality, 
-while `test_phonetic_algorithm.pl` provides comprehensive validation that the COF::DataCompat 
-phonetic algorithm produces identical results to the original implementation. This ensures 
-100% compatibility for phonetic hashing when DB_File is unavailable.
+The `test_core.pl` file includes a comprehensive compatibility layer section that validates 
+COF::DataCompat functionality, while `test_phonetic_algorithm.pl` provides extensive validation 
+that the COF::DataCompat phonetic algorithm produces identical results to the original 
+implementation. This ensures 100% compatibility for phonetic hashing when DB_File is unavailable.
 
 ## Support
 
