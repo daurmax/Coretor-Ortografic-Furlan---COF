@@ -16,6 +16,7 @@ The test suite is organized into 6 specialized test files that comprehensively c
 | `test_radix_tree.pl` | 72 | RadixTree ED1 suggestions, ground truth verification, performance tests |
 | `test_utilities.pl` | 37 | Encoding, CLI validation, legacy vocabulary handling |
 | `test_phonetic_algorithm.pl` | 231 | Comprehensive phonetic algorithm testing (98 words × 2 tests + 13 robustness + 28 parity tests) |
+| `test_suggestion_ranking.pl` | 50 | Suggestion ranking order validation with non-determinism handling |
 | `test_known_bugs.pl` | 9 | Historical documentation of known bugs (non-deterministic suggestion ordering for tied suggestions) |
 
 ### Special Test Files
@@ -38,6 +39,7 @@ perl test_suggestions.pl
 perl test_radix_tree.pl
 perl test_utilities.pl
 perl test_phonetic_algorithm.pl
+perl test_suggestion_ranking.pl
 perl test_known_bugs.pl
 ```
 
@@ -57,7 +59,7 @@ All tests follow these principles:
 
 ## Test Results Summary
 
-- **Total Tests**: 595 tests across 7 test files (6 main + 1 special)
+- **Total Tests**: 645 tests across 8 test files (6 main + 2 special)
 - **Test Breakdown**:
   - Core & Database: 129 tests (initialization, compatibility, database integration)
   - WordIterator: 67 tests (tokenization, Unicode, edge cases)
@@ -65,6 +67,7 @@ All tests follow these principles:
   - RadixTree: 72 tests (ED1 suggestions with ground truth verification)
   - Utilities: 37 tests (encoding, CLI validation, legacy data)
   - Phonetic Algorithm: 231 tests (98 words × 2 hashes + 13 robustness + 28 parity tests)
+  - Suggestion Ranking: 50 tests (multi-factor ranking with non-determinism handling)
   - Known Bugs: 9 tests (documents non-deterministic behavior for historical preservation)
 - **Expected Results**: 5/6 suites pass (1 pre-existing failure in test_utilities.pl line 24)
 - **Database Dependencies**: Core tests require COF dictionaries in `../dict/` directory
@@ -80,6 +83,17 @@ This streamlined structure (6 test files, down from 9 previously) provides:
 - **Enhanced Clarity**: Consolidated test files eliminate redundant imports and setup code
 - **Clean Directory**: Follows AGENTS.md guidelines for test organization
 
+## Special Notes on test_suggestion_ranking.pl
+
+This test validates the **exact ordering** of suggestions returned by COF:
+
+- **Multi-Factor Ranking**: Tests frequency weight, Levenshtein distance, and Friulian alphabetical ordering
+- **Non-Determinism Handling**: Accepts both valid orderings for 'scuela' and 'prossim' positions 4-5
+- **Ground Truth Validation**: 50 test cases covering basic, complex, frequency-based, and edge cases
+- **Case Preservation**: Validates lowercase, title case, and uppercase input handling
+- **Encoding Correctness**: Uses Latin-1 hex escapes (\xNN) for Friulian special characters
+- **Related Tools**: Uses `util/suggestion_ranking_utils.pl` for ground truth generation
+
 ## Special Notes on test_known_bugs.pl
 
 This test file serves as **historical documentation** of known bugs in the COF codebase:
@@ -89,6 +103,7 @@ This test file serves as **historical documentation** of known bugs in the COF c
 - **Valid Variants**: Documents all valid orderings that COF may produce (e.g., 'scuela' positions 4-5)
 - **Purpose**: Preserves ground truth behavior at time of writing, alerts to future changes in codebase behavior
 - **Not a Bug Report**: This is accepted behavior documentation, not a request for fixes
+- **Related Tools**: Uses `util/nondeterminism_utils.pl` for detecting new non-deterministic cases
 
 ## Quality Guidelines
 
