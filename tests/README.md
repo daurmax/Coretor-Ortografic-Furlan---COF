@@ -10,17 +10,19 @@ The test suite is organized into specialized test files that comprehensively cov
 
 | File | Tests | Purpose |
 |------|--------|---------|
-| `test_core_functionality.pl` | 46 | Database connectivity, basic SpellChecker operations |
-| `test_core_functionality_compat.pl` | 18 | COF::DataCompat compatibility validation and testing |
-| `test_components.pl` | 22 | FastChecker and RTChecker component testing |
-| `test_radix_tree.pl` | 21 | RadixTree functionality, suggestions, performance testing |
-| `test_utilities.pl` | 37 | Encoding, CLI validation, legacy data handling |
-| `test_worditerator.pl` | 67 | WordIterator functionality and text processing |
-| `test_phonetic_algorithm.pl` | 209 | Comprehensive phonetic algorithm testing (98 words × 2 tests + 13 robustness tests) |
+| `test_core_functionality.pl` | 36 | Database connectivity, basic SpellChecker operations |
+| `test_core_functionality_compat.pl` | 17 | COF::DataCompat compatibility validation and testing |
+| `test_components.pl` | 23 | FastChecker and RTChecker component testing |
+| `test_database_integration.pl` | 35 | Database integration and data access |
+| `test_phonetic_algorithm.pl` | 231 | Comprehensive phonetic algorithm testing (98 words × 2 tests + 13 robustness + 28 parity tests) |
+| `test_radix_tree.pl` | 72 | RadixTree ED1 suggestions, ground truth verification |
+| `test_suggestions.pl` | 27 | Suggestion algorithm testing |
+| `test_utilities.pl` | 22 | Encoding, CLI validation, utility functions |
+| `test_worditerator.pl` | 33 | WordIterator functionality and text processing |
 
 ### Test Runner
 
-- **`run_all_tests.pl`** - Unified test suite runner for all 7 test files
+- **`run_all_tests.pl`** - Unified test suite runner for all 9 test files
 
 ## Running Tests
 
@@ -28,11 +30,13 @@ The test suite is organized into specialized test files that comprehensively cov
 ```bash
 perl test_core_functionality.pl
 perl test_core_functionality_compat.pl
-perl test_components.pl  
+perl test_components.pl
+perl test_database_integration.pl
+perl test_phonetic_algorithm.pl
 perl test_radix_tree.pl
+perl test_suggestions.pl
 perl test_utilities.pl
 perl test_worditerator.pl
-perl test_phonetic_algorithm.pl
 ```
 
 ### Complete Test Suite
@@ -51,8 +55,11 @@ All tests follow these principles:
 
 ## Test Results Summary
 
-- **Phonetic Algorithm Tests**: 207 comprehensive tests for exact Perl-Python compatibility (97 words × 2 hashes + 13 robustness tests)
-- **Other Test Suites**: Various tests across core functionality, components, utilities, and word iteration
+- **Total Tests**: 496 tests across 9 test files
+- **Phonetic Algorithm**: 231 tests for exact Perl-Python parity (98 words × 2 hashes + 13 robustness + 28 parity tests)
+- **RadixTree**: 72 tests for ED1 suggestions with ground truth verification
+- **Core Functionality**: 88 tests across core, compatibility, and database integration
+- **Other Components**: 105 tests for suggestions, utilities, word iteration, and component integration
 - **Expected Results**: All tests should pass with proper COF installation
 - **Database Dependencies**: Core tests require COF dictionaries in `../dict/` directory
 - **Component Dependencies**: Component tests handle missing FastChecker/RTChecker gracefully
@@ -66,21 +73,24 @@ This consolidated structure replaces the previous 17+ individual test files, pro
 - Improved test execution performance
 - Cleaner directory structure following AGENTS.md guidelines
 
-## Linee guida qualità
-- Test chiari: ogni `ok` / `is` deve spiegare il perché
-- Nessun debug `print` residuo (usa `diag` se strettamente necessario)
-- Evitare ordini non deterministici (sort esplicito se serve)
-- Coprire: percorso positivo, negativo, edge-case minimo, edge-case estremo
+## Quality Guidelines
 
-## Cosa NON fare
-- Spostare di nuovo runner in `util/`
-- Aggiungere script di esecuzione duplicati
-- Mischiare generazione dati con asserzioni — predisponi helper separati se cresce
+- **Clear Test Descriptions**: Every `ok` / `is` assertion must explain its purpose
+- **No Debug Output**: Remove debug `print` statements (use `diag` only when strictly necessary)
+- **Deterministic Order**: Avoid non-deterministic ordering (use explicit `sort` when needed)
+- **Coverage**: Test positive path, negative path, minimal edge case, and extreme edge case
 
-## Futuri miglioramenti (opzionale)
-- Aggiungere test performance separati (es: `perf/` directory dedicata)
-- Integrare coverage (Devel::Cover) per analisi estesa
-- Pipeline CI automatica
+## What NOT to Do
+
+- Do not move test runners to `util/` directory
+- Do not add duplicate test execution scripts
+- Do not mix data generation with assertions — use separate helper functions if complexity grows
+
+## Future Improvements (Optional)
+
+- Add separate performance tests (e.g., dedicated `perf/` directory)
+- Integrate coverage analysis (Devel::Cover) for extended reporting
+- Implement automated CI pipeline
 
 ## Compatibility Note
 
@@ -89,8 +99,10 @@ while `test_phonetic_algorithm.pl` provides comprehensive validation that the CO
 phonetic algorithm produces identical results to the original implementation. This ensures 
 100% compatibility for phonetic hashing when DB_File is unavailable.
 
-## Supporto
-Per diagnosticare comportamento interno: usa gli strumenti in `util/` (`spellchecker_utils.pl`, `radixtree_utils.pl`, `encoding_utils.pl`).
+## Support
 
----
-Mantieni questa directory pulita e focalizzata: un singolo runner, test granulari, nessun rumore.
+For diagnosing internal behavior, use the utilities in `util/` directory:
+- `spellchecker_utils.pl` - Spell checking and suggestion analysis
+- `radixtree_utils.pl` - RadixTree suggestion debugging
+- `encoding_utils.pl` - Text encoding inspection
+- `database_utils.pl` - Database content investigation

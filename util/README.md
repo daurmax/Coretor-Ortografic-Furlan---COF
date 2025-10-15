@@ -49,6 +49,16 @@ WordIterator debugging and token analysis utility.
 - `--raw` - Show raw token data
 - `--help` - Display help information
 
+### `database_utils.pl`
+COF database inspection and diagnostic utility.
+- `--errors` - Inspect errors database only
+- `--elisions` - Inspect elisions database only
+- `--frequency` - Inspect frequency database only
+- `--test-word WORD` - Test suggestions for specific word
+- `--show-top N` - Show top N most frequent words (default: 10)
+- `--sample N` - Show N sample entries per database (default: 20)
+- `--help` - Display full documentation
+
 ## Usage Examples
 
 ### Basic Spell Checking
@@ -96,6 +106,26 @@ perl util/worditerator_utils.pl --text "Cjale il libri"
 perl util/worditerator_utils.pl --file sample.txt --limit 50
 ```
 
+### Database Investigation
+```bash
+# Full database investigation
+perl util/database_utils.pl
+
+# Inspect specific database
+perl util/database_utils.pl --errors
+perl util/database_utils.pl --elisions
+perl util/database_utils.pl --frequency
+
+# Test suggestions for specific word
+perl util/database_utils.pl --test-word furla
+
+# Show top 20 most frequent words
+perl util/database_utils.pl --frequency --show-top 20
+
+# Show 50 sample entries per database
+perl util/database_utils.pl --sample 50
+```
+
 ## Development Guidelines
 
 - All utilities follow the `*_utils.pl` naming convention
@@ -128,6 +158,8 @@ This directory has been cleaned of temporary development files:
 - `spellchecker_utils.pl` now unified with automatic COF::Data/COF::DataCompat detection
 
 **Current Structure**:
+- `database_utils.pl` - COF database inspection and diagnostic utility (relocated from tests/)
+- `dataset_utils.pl` - Dataset processing and validation utilities
 - `encoding_utils.pl` - Text encoding analysis and conversion
 - `radixtree_utils.pl` - RadixTree operations, diagnostics and test dataset generation
 - `spellchecker_utils.pl` - Unified spell checking (with compatibility auto-detection)
