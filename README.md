@@ -298,35 +298,63 @@ Modern additions while preserving original structure in flat hierarchy:
 ├── AGENTS.md                   # Contribution guidelines  
 ├── .gitattributes              # Git LFS configuration
 ├── .github/                    # GitHub integration
-├── testing/                    # Testing and validation tools
-│   ├── README.md               # Testing suite documentation
+├── validation/                 # Validation and compatibility testing
+│   ├── README.md               # Validation suite documentation
 │   ├── ground_truth/           # COF ground truth generation
 │   │   ├── generate_ground_truth.py # Reference result generator
 │   │   └── results/            # Generated ground truth files
-│   ├── validation/             # Compatibility validation
+│   ├── compatibility/          # Compatibility validation
 │   │   ├── validate_compatibility.py # Validation suite
 │   │   └── reports/            # Validation reports
 │   └── fixtures/               # Test data and word lists
-│   └── copilot-instructions.md # AI assistance guidelines
 ├── lib/COF/DataCompat.pm       # 🆕 DB_File-free compatible version
-└── tests/test_core_functionality_compat.pl  # 🆕 DataCompat compatibility tests
+
+├── [original files]            # All COF-2.16 files at root level
+├── dict/                       # Enhanced dictionary folder
+│   ├── empty                   # Original placeholder (preserved)
+│   ├── words.db                # Main dictionary (627MB) [Git LFS]
+│   ├── words.rt                # RadixTree index (30MB) [Git LFS]
+│   ├── frec.db                 # Frequency data (2.6MB) [Git LFS]
+│   ├── elisions.db             # Elision rules (332KB) [Git LFS]
+│   └── errors.db               # Error patterns (12KB) [Git LFS]
+├── res/icons/
+│   ├── [original .ico files]   # Preserved unchanged
+│   └── cof128.png              # Converted logo for README
+├── tests/                      # Test suite (646 total tests)
+│   ├── test_core.pl            # Core functionality, compatibility, database (129 tests)
+│   ├── test_worditerator.pl    # WordIterator comprehensive tests (67 tests)
+│   ├── test_suggestions.pl     # Component integration & suggestions (50 tests)
+│   ├── test_radix_tree.pl      # RadixTree functionality (72 tests)
+│   ├── test_suggestion_ranking.pl # Suggestion ranking validation (51 tests)
+│   ├── test_utilities.pl       # Encoding, CLI, legacy data (37 tests)
+│   ├── test_phonetic_algorithm.pl # Phonetic algorithm validation (231 tests)
+│   ├── test_known_bugs.pl      # Known behavior documentation (9 tests)
+│   └── run_all_tests.pl        # Unified test suite runner
+├── util/                       # Support utilities (parameterized)
+│   ├── spellchecker_utils.pl   # SpellChecker suggestions with CLI options
+│   ├── radixtree_utils.pl      # RadixTree suggestions with CLI options
+│   ├── encoding_utils.pl       # UTF-8 encoding diagnostics with CLI
+│   ├── database_utils.pl       # Database management utilities
+│   └── README.md               # Utility documentation and usage examples
+├── legacy/                     # Historical reference files
+│   ├── 00-contenuto.txt        # Original content description
+│   ├── lemis_cof_2015.txt      # Historical word lemmas (24,266 entries)
+│   └── peraulis_cof_2015.txt   # Historical vocabulary list (1M+ words)
+└── temp/                       # Temporary output files (ignored by git)
+```
 
 ### 🔧 Compatibility Files
 
 **Primary Solution**: Fix BerkeleyDB PATH configuration (`$env:PATH += ";C:\Strawberry\c\bin"`) to enable full `COF::Data` functionality.
 
-**Fallback Solution**: When PATH configuration is not feasible, we provide compatibility alternatives that maintain 100% algorithm accuracy:
+**Fallback Solution**: When PATH configuration is not feasible, we provide `COF::DataCompat`:
 
 ```
-├── lib/COF/DataCompat.pm       # Drop-in replacement for COF::Data
-│                               # - Complete phalg_furlan algorithm  
-│                               # - Uses SDBM_File (standard Perl)
-│                               # - No BerkeleyDB dependency
-│                               # - Limited dictionary features
-├── tests/test_core_functionality_compat.pl  # Compat version tests
-├── tests/test_radix_tree.pl    # RadixTree functionality tests (21 cases)
-├── tests/run_all_tests.pl      # Complete test suite runner (402 cases)
-└── util/spellchecker_utils.pl  # CLI utilities (auto-detects compatibility)
+lib/COF/DataCompat.pm           # Drop-in replacement for COF::Data
+                                # - Complete phalg_furlan algorithm  
+                                # - Uses SDBM_File (standard Perl)
+                                # - No BerkeleyDB dependency
+                                # - Limited dictionary features
 ```
 
 **Recommendation Hierarchy**:
@@ -340,33 +368,6 @@ Modern additions while preserving original structure in flat hierarchy:
 - ✅ **Zero Additional Dependencies**: Uses only standard Perl modules
 - ⚠️ **Reduced Functionality**: Dictionary operations limited
 - 🎯 **Primary Use Case**: Phonetic algorithm integration when full setup is not possible
-├── [original files]            # All COF-2.16 files at root level
-├── dict/                       # Enhanced dictionary folder
-│   ├── empty                   # Original placeholder (preserved)
-│   ├── words.db                # Main dictionary (627MB) [Git LFS]
-│   ├── words.rt                # RadixTree index (30MB) [Git LFS]
-│   ├── frec.db                 # Frequency data (2.6MB) [Git LFS]
-│   ├── elisions.db             # Elision rules (332KB) [Git LFS]
-│   └── errors.db               # Error patterns (12KB) [Git LFS]
-├── res/icons/
-│   ├── [original .ico files]   # Preserved unchanged
-│   └── cof128.png              # Converted logo for README
-├── tests/                      # Test suite (76 total tests)
-│   ├── test_phonetic_perl.pl   # Phonetic algorithm validation (47 tests)
-│   ├── test_radix_tree.pl      # RadixTree functionality (9 tests)
-│   ├── test_spell_checker.pl   # SpellChecker validation (5 tests) 
-│   ├── test_key_value_database.pl # Database lookups (15 tests)
-│   └── run_all_tests.pl        # Integrated test runner
-├── util/                       # Support utilities (parameterized)
-│   ├── spellchecker_utils.pl   # SpellChecker suggestions with CLI options
-│   ├── radixtree_utils.pl      # RadixTree suggestions with CLI options
-│   ├── encoding_utils.pl       # UTF-8 encoding diagnostics with CLI
-│   └── README.md               # Utility documentation and usage examples
-├── legacy/                     # Historical reference files
-│   ├── 00-contenuto.txt        # Original content description
-│   ├── lemis_cof_2015.txt      # Historical word lemmas (24,266 entries)
-│   └── peraulis_cof_2015.txt   # Historical vocabulary list (1M+ words)
-└── temp/                       # Temporary output files (ignored by git)
 ```
 
 ### Dictionary Database
@@ -382,34 +383,43 @@ The original COF distribution included only an `empty` placeholder in `dict/`. T
 
 ## Testing Framework
 
-The repository includes both internal test suites for COF validation and external compatibility testing tools for modern spell checker implementations.
+The repository includes comprehensive test suites for COF validation (646 tests) and external compatibility testing tools for modern spell checker implementations.
 
 ### Internal Test Suites (`tests/`)
 
 | Test Suite | Tests | Coverage |
 |------------|-------|----------|
-| **RadixTree (RT_Checker)** | 9 | Word existence, edit-distance suggestions |
-| **SpellChecker** | 5 | Word validation, spelling corrections |
-| **KeyValueDatabase** | 15 | Database lookups, edge cases |
-| **Phonetic Algorithm** | 47 | phalg_furlan hash algorithm validation |
+| **test_core.pl** | 129 | Core functionality, compatibility layer, database integration |
+| **test_worditerator.pl** | 67 | WordIterator logic, Unicode handling, edge cases |
+| **test_suggestions.pl** | 50 | Component integration and suggestion algorithm |
+| **test_radix_tree.pl** | 72 | RadixTree structure, lookups, suggestions, performance |
+| **test_suggestion_ranking.pl** | 51 | Exact suggestion order validation with multi-factor ranking |
+| **test_utilities.pl** | 37 | Encoding, CLI validation, legacy data handling |
+| **test_phonetic_algorithm.pl** | 231 | Comprehensive phonetic algorithm validation |
+| **test_known_bugs.pl** | 9 | Known behavior documentation |
+| **Total** | **646** | **Complete COF functionality validation** |
 
 #### Test Coverage Areas
-- **Basic Functionality**: Word existence checking, suggestion generation
-- **Edge Cases**: Empty keys, non-existent entries, invalid inputs
-- **Database Integration**: Phonetic, error, frequency, elision lookups
-- **Character Handling**: UTF-8 support for Friulian characters (þ)
+- **Core Functionality**: Database availability, initialization, basic operations
+- **Backwards Compatibility**: COF::DataCompat without DB_File dependency
+- **Phonetic Algorithm**: phalg_furlan hash generation and consistency
+- **Text Processing**: WordIterator tokenization, Unicode normalization
+- **Dictionary System**: RadixTree, user dict, exceptions, frequencies
+- **Suggestion Engine**: Ranking algorithms, edit distance, phonetic matching
+- **Edge Cases**: Empty inputs, special characters, boundary conditions
+- **Character Handling**: UTF-8 support for Friulian characters (àèìòù, ç, etc.)
 
-### Compatibility Testing Suite (`testing/`)
+### Compatibility Testing Suite (`validation/`)
 
-The testing framework provides tools for validating other Friulian spell checker implementations against COF as the authoritative reference:
+The validation framework provides tools for testing other Friulian spell checker implementations against COF as the authoritative reference:
 
-#### Ground Truth Generation (`testing/ground_truth/`)
-- **`generate_ground_truth.py`**: Creates reference results using COF Perl script
+#### Ground Truth Generation (`validation/ground_truth/`)
+- **`generate_ground_truth.py`**: Creates reference results using COF Perl implementation
 - **Input Support**: JSON test cases, plain text word lists, or default Friulian words
 - **Output Formats**: JSON (machine-readable), TSV (analysis), and statistics files
 - **Batch Processing**: Handles large word lists efficiently
 
-#### Compatibility Validation (`testing/validation/`)
+#### Compatibility Validation (`validation/compatibility/`)
 - **`validate_compatibility.py`**: Compares other implementations against COF results
 - **Supported Checkers**: FurlanSpellChecker (Python), custom executables
 - **Metrics**: Correctness matches, suggestion similarity, overall compatibility
@@ -418,11 +428,11 @@ The testing framework provides tools for validating other Friulian spell checker
 #### Usage Examples
 ```bash
 # Generate ground truth from test words
-cd testing/ground_truth
+cd validation/ground_truth
 python generate_ground_truth.py ../fixtures/test_words.txt
 
 # Validate FurlanSpellChecker compatibility
-cd ../validation
+cd ../compatibility
 python validate_compatibility.py furlanspellchecker
 
 # View compatibility report
@@ -435,18 +445,7 @@ cat reports/furlanspellchecker_compatibility_report_*.md
 - **Performance Benchmarking**: Compare speed and accuracy across implementations
 - **Development Guidance**: Identify specific areas needing improvement
 
-See [`testing/README.md`](testing/README.md) for comprehensive documentation.
-- **Algorithm Validation**: Edit-distance calculations, ranking systems
-- **Edge Cases**: Start-of-word consonants, special endings
-
-```powershell
-# Run phonetic tests
-perl tests/test_phonetic_perl.pl
-
-# Expected output format:
-# word -> ("hash1", "hash2")
-# cjatâ -> ("A696", "c7696")
-```
+See [`validation/README.md`](validation/README.md) for comprehensive documentation.
 
 ## Troubleshooting
 
@@ -490,35 +489,27 @@ perl tests/test_phonetic_perl.pl
 
 **Alternative**: If PATH fix is not feasible, use `COF::DataCompat` as documented in compatibility sections above.
 
-## Testing & Validation
+## Running Tests
 
-The enhanced repository includes comprehensive test coverage to validate the COF implementation:
-
-### Running Tests
+The repository includes a comprehensive test suite with 646 tests covering all COF functionality:
 
 ```bash
-# Run individual test suites:
+# Run all tests with integrated runner (recommended):
 cd tests
-perl test_radix_tree.pl       # RadixTree/RT_Checker functionality (8 tests)
-perl test_spell_checker.pl    # SpellChecker word validation (5 tests)  
-perl test_key_value_database.pl # Database lookups (8 tests)
-perl test_phonetic_perl.pl    # Phonetic algorithm validation (47 tests)
+perl run_all_tests.pl         # Complete test suite (646 tests)
 
-# Run all tests with integrated runner:
-perl run_all_tests.pl         # Complete test suite (76 total tests)
+# Run individual test suites:
+perl test_core.pl                      # Core & database (129 tests)
+perl test_worditerator.pl              # WordIterator (67 tests)
+perl test_suggestions.pl               # Suggestions & components (50 tests)
+perl test_radix_tree.pl                # RadixTree (72 tests)
+perl test_suggestion_ranking.pl        # Ranking validation (51 tests)
+perl test_utilities.pl                 # Utilities (37 tests)
+perl test_phonetic_algorithm.pl        # Phonetic algorithm (231 tests)
+perl test_known_bugs.pl                # Known behavior (9 tests)
 ```
 
-### Test Coverage
-
-| Test Suite | Tests | Coverage |
-|------------|-------|----------|
-| **RadixTree (RT_Checker)** | 9 | Word existence, edit-distance suggestions |
-| **SpellChecker** | 5 | Word validation, spelling corrections |
-| **KeyValueDatabase** | 15 | Database lookups, edge cases |
-| **Phonetic Algorithm** | 47 | phalg_furlan hash validation |
-| **Total** | **76** | **Complete COF functionality validation** |
-
-The test suite validates the correctness and reliability of the COF implementation.
+The test suite validates the correctness, reliability, and behavior of the COF implementation across all components.
 
 ## Historical Context
 
