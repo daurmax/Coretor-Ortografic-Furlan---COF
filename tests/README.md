@@ -29,6 +29,8 @@ The test suite is organized into 7 specialized test files that comprehensively c
 
 - **`run_all_tests.pl`** - Unified test suite runner for all 6 test files
 
+> **See also:** The Python-based ground-truth and compatibility tooling lives in `../validation/`. Those scripts are not part of the Perl TAP suite; they generate COF reference data and validation reports for other implementations.
+
 ## Running Tests
 
 ### Individual Test Files

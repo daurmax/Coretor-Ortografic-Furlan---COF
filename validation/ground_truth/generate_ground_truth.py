@@ -343,7 +343,7 @@ def main():
         '-o', '--output', 
         type=Path, 
         default=None,
-        help='Output directory (default: ./testing/ground_truth/)'
+        help='Output directory (default: ./validation/ground_truth/)'
     )
     parser.add_argument(
         '--batch-size', 
@@ -354,12 +354,12 @@ def main():
     
     args = parser.parse_args()
     
-    # Determine COF root (this script should be in COF/testing/ground_truth/)
+    # Determine COF root (this script should be in COF/validation/ground_truth/)
     cof_root = Path(__file__).parent.parent.parent
     
     # Set default output directory
     if args.output is None:
-        args.output = cof_root / "testing" / "ground_truth" / "results"
+        args.output = cof_root / "validation" / "ground_truth" / "results"
     
     # Initialize generator
     generator = COFGroundTruthGenerator(cof_root)

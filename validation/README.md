@@ -1,10 +1,10 @@
-# COF Testing Tools
+# COF Validation Tools
 
 This directory contains tools for generating ground truth data and validating compatibility between different Friulian spell checker implementations.
 
 ## Overview
 
-The testing suite consists of two main components:
+This toolkit consists of two main components:
 
 1. **Ground Truth Generation** (`ground_truth/`) - Tools to generate reference results using the COF Perl script
 2. **Compatibility Validation** (`validation/`) - Tools to validate other spell checkers against COF results
@@ -12,7 +12,7 @@ The testing suite consists of two main components:
 ## Directory Structure
 
 ```
-testing/
+validation/
 ├── README.md                           # This file
 ├── ground_truth/                       # Ground truth generation tools
 │   ├── generate_ground_truth.py        # Main ground truth generator
@@ -20,7 +20,7 @@ testing/
 │       ├── *_ground_truth_*.json       # Ground truth data (JSON format)
 │       ├── *_ground_truth_*.tsv        # Ground truth data (TSV format)
 │       └── *_statistics_*.txt          # Generation statistics
-├── validation/                         # Compatibility validation tools
+├── compatibility/                      # Compatibility validation tools
 │   ├── validate_compatibility.py       # Main validation script
 │   └── reports/                        # Generated validation reports
 │       └── *_compatibility_report_*.md # Detailed compatibility reports
@@ -39,7 +39,7 @@ The ground truth generator creates reference results using the original COF Perl
 
 ```bash
 # Generate ground truth from default test words
-cd COF/testing/ground_truth
+cd COF/validation/ground_truth
 python generate_ground_truth.py
 
 # Generate from specific word list
@@ -84,7 +84,7 @@ The validation suite compares other spell checker implementations against COF gr
 
 ```bash
 # Validate FurlanSpellChecker from workspace
-cd COF/testing/validation
+cd COF/validation/compatibility
 python validate_compatibility.py furlanspellchecker
 
 # Validate with specific ground truth file
@@ -129,11 +129,11 @@ Validation generates detailed Markdown reports including:
 
 ```bash
 # 1. Generate ground truth from test words
-cd COF/testing/ground_truth
+cd COF/validation/ground_truth
 python generate_ground_truth.py ../fixtures/test_words.txt
 
 # 2. Validate FurlanSpellChecker compatibility
-cd ../validation
+cd ../compatibility
 python validate_compatibility.py furlanspellchecker
 
 # 3. Review generated report
@@ -233,13 +233,13 @@ Both tools support batch processing for large word lists. Adjust batch sizes bas
 
 ## Historical Context
 
-This testing suite was developed to address compatibility validation between the original COF Perl implementation and newer Python-based implementations. The ground truth approach ensures objective comparison against the authoritative COF results.
+This validation suite was developed to address compatibility validation between the original COF Perl implementation and newer Python-based implementations. The ground truth approach ensures objective comparison against the authoritative COF results.
 
 Previous validation attempts used mock/fake reference data, which provided meaningless compatibility metrics. This suite generates real COF results for accurate validation.
 
 ## Contributing
 
-When adding new testing capabilities:
+When adding new validation capabilities:
 
 1. Maintain backward compatibility with existing ground truth formats
 2. Document new features in this README

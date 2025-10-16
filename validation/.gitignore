@@ -1,0 +1,16 @@
+# Generated results - these are computable outputs
+ground_truth/results/*.json
+ground_truth/results/*.tsv
+ground_truth/results/*.txt
+ground_truth/results/*.csv
+validation/reports/*.md
+
+# Temporary files
+*.tmp
+*.temp
+*~
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo

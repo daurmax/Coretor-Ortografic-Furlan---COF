@@ -46,7 +46,7 @@ class COFCompatibilityValidator:
         """
         self.cof_root = cof_root
         self.color_manager = SimpleColorManager()
-        self.ground_truth_dir = cof_root / "testing" / "ground_truth" / "results"
+        self.ground_truth_dir = cof_root / "validation" / "ground_truth" / "results"
         
     def find_latest_ground_truth(self) -> Optional[Path]:
         """Find the most recent ground truth file.
@@ -375,7 +375,7 @@ class COFCompatibilityValidator:
         print(f"Failed words: {self.color_manager.error(str(len(comparison['failed_words'])))} cases")
         
         # Generate report
-        output_dir = self.cof_root / "testing" / "validation" / "reports"
+        output_dir = self.cof_root / "validation" / "compatibility" / "reports"
         report_path = self.generate_report(comparison, spell_checker_type, output_dir)
         
         return comparison
@@ -404,12 +404,12 @@ def main():
     parser.add_argument(
         '-o', '--output', 
         type=Path,
-        help='Output directory for reports (default: ./testing/validation/reports/)'
+        help='Output directory for reports (default: ./validation/compatibility/reports/)'
     )
     
     args = parser.parse_args()
     
-    # Determine COF root (this script should be in COF/testing/validation/)
+    # Determine COF root (this script should be in COF/validation/compatibility/)
     cof_root = Path(__file__).parent.parent.parent
     
     # Initialize validator
