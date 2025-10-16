@@ -19,6 +19,7 @@ Test Suite Structure:
 - WordIterator: Tokenization, Unicode handling, edge cases
 - Suggestions & Components: Component integration and suggestion algorithm (50 tests)
 - RadixTree: RT structure, lookup, suggestions, performance
+- Suggestion Ranking: Exact suggestion order validation with multi-factor ranking (50 tests)
 - Utilities: Encoding, CLI validation, legacy data
 - Phonetic Algorithm: phalg_furlan correctness and comprehensive validation
 
@@ -39,6 +40,7 @@ my @test_suites = (
     { file => 'test_worditerator.pl',              name => 'WordIterator',             desc => 'Iterator logic, Unicode, edge cases' },
     { file => 'test_suggestions.pl',               name => 'Suggestions & Components', desc => 'Component integration + suggestion algorithm (50 tests: 23 components + 27 suggestions)' },
     { file => 'test_radix_tree.pl',                name => 'RadixTree',                desc => 'RadixTree functionality, suggestions, performance' },
+    { file => 'test_suggestion_ranking.pl',        name => 'Suggestion Ranking',       desc => 'Exact suggestion order validation with multi-factor ranking (51 tests)' },
     { file => 'test_utilities.pl',                 name => 'Utilities',                desc => 'Encoding, CLI validation, legacy data' },
     { file => 'test_phonetic_algorithm.pl',        name => 'Phonetic Algorithm',       desc => 'Comprehensive phonetic algorithm validation' },
 );

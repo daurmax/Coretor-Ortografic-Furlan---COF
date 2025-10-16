@@ -4,7 +4,7 @@ This directory contains the consolidated test suite for the COF (Coretor Ortogra
 
 ## Test Structure
 
-The test suite is organized into 6 specialized test files that comprehensively cover all COF functionality:
+The test suite is organized into 7 specialized test files that comprehensively cover all COF functionality:
 
 ### Core Test Files
 
@@ -16,7 +16,7 @@ The test suite is organized into 6 specialized test files that comprehensively c
 | `test_radix_tree.pl` | 72 | RadixTree ED1 suggestions, ground truth verification, performance tests |
 | `test_utilities.pl` | 37 | Encoding, CLI validation, legacy vocabulary handling |
 | `test_phonetic_algorithm.pl` | 231 | Comprehensive phonetic algorithm testing (98 words × 2 tests + 13 robustness + 28 parity tests) |
-| `test_suggestion_ranking.pl` | 50 | Suggestion ranking order validation with non-determinism handling |
+| `test_suggestion_ranking.pl` | 51 | Suggestion ranking order validation with non-determinism handling |
 | `test_known_bugs.pl` | 9 | Historical documentation of known bugs (non-deterministic suggestion ordering for tied suggestions) |
 
 ### Special Test Files
@@ -59,7 +59,7 @@ All tests follow these principles:
 
 ## Test Results Summary
 
-- **Total Tests**: 645 tests across 8 test files (6 main + 2 special)
+- **Total Tests**: 646 tests across 8 test files (6 main + 2 special)
 - **Test Breakdown**:
   - Core & Database: 129 tests (initialization, compatibility, database integration)
   - WordIterator: 67 tests (tokenization, Unicode, edge cases)
@@ -67,7 +67,7 @@ All tests follow these principles:
   - RadixTree: 72 tests (ED1 suggestions with ground truth verification)
   - Utilities: 37 tests (encoding, CLI validation, legacy data)
   - Phonetic Algorithm: 231 tests (98 words × 2 hashes + 13 robustness + 28 parity tests)
-  - Suggestion Ranking: 50 tests (multi-factor ranking with non-determinism handling)
+  - Suggestion Ranking: 51 tests (multi-factor ranking with non-determinism handling)
   - Known Bugs: 9 tests (documents non-deterministic behavior for historical preservation)
 - **Expected Results**: 5/6 suites pass (1 pre-existing failure in test_utilities.pl line 24)
 - **Database Dependencies**: Core tests require COF dictionaries in `../dict/` directory
