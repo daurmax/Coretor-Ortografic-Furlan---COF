@@ -307,6 +307,19 @@ Modern additions while preserving original structure in flat hierarchy:
 │   │   ├── validate_compatibility.py # Validation suite
 │   │   └── reports/            # Validation reports
 │   └── fixtures/               # Test data and word lists
+├── database_export/            # 🆕 Database export & conversion tools
+│   ├── README.md               # Complete export documentation
+│   ├── export_words.pl         # Export words.db → JSON
+│   ├── export_frequencies.pl   # Export frec.db → JSON
+│   ├── export_errors.pl        # Export errors.db → JSON
+│   ├── export_elisions.pl      # Export elisions.db → JSON
+│   ├── export_all.pl           # Run all exports sequentially
+│   ├── convert_to_msgpack.py   # Convert JSON → msgpack format
+│   ├── convert_to_sqlite.py    # Convert JSON → SQLite format
+│   └── output/                 # Generated files (gitignored)
+│       ├── *.json              # Intermediate JSON exports
+│       ├── *.msgpack           # msgpack format (recommended)
+│       └── *.sqlite            # SQLite format (alternative)
 ├── lib/COF/DataCompat.pm       # 🆕 DB_File-free compatible version
 
 ├── [original files]            # All COF-2.16 files at root level
@@ -380,6 +393,64 @@ The original COF distribution included only an `empty` placeholder in `dict/`. T
 - **errors.db** (12KB): Common spelling error patterns
 
 > 📦 **Git LFS Required**: Dictionary files use Git Large File Storage. Install with: `git lfs install && git lfs pull`
+
+### Database Export & Conversion Tools
+
+**Location**: `database_export/`
+
+The repository includes a complete toolchain for exporting COF's BerkeleyDB databases to modern formats (msgpack or SQLite), enabling integration with other applications and modern spell checker implementations.
+
+#### Why Export?
+
+1. **BerkeleyDB Obsolescence**: Remove dependency on obsolete DB_File module
+2. **Modern Formats**: Use msgpack (fast, portable) or SQLite (standard, queryable)
+3. **Cross-Platform**: Enable use in Python, JavaScript, and other languages
+4. **Size Reduction**: msgpack format is 30-60% smaller than BerkeleyDB
+5. **Portability**: No platform-specific binary compatibility issues
+
+#### Export Process
+
+**Step 1: Export to JSON** (Perl scripts using COF's exact encoding filters)
+```bash
+cd database_export
+perl export_all.pl
+```
+
+Generates:
+- `words.json` (305 MB) - 7.4M phonetic hashes, 10.1M words
+- `frequencies.json` (1.4 MB) - 69,051 word frequencies
+- `errors.json` (8 KB) - 301 error corrections
+- `elisions.json` (196 KB) - 10,604 elision words
+
+**Step 2: Convert to Target Format**
+
+For **msgpack** (recommended for FurlanSpellChecker):
+```bash
+python convert_to_msgpack.py
+```
+
+For **SQLite** (alternative, compatible format):
+```bash
+python convert_to_sqlite.py
+```
+
+#### Format Comparison
+
+| Format | words | frequencies | errors | elisions | Notes |
+|--------|-------|-------------|--------|----------|-------|
+| **BerkeleyDB** (original) | 598 MB | 2.5 MB | 12 KB | 324 KB | Obsolete, hard to install |
+| **msgpack** (recommended) | ~250 MB | ~1.2 MB | ~6 KB | ~150 KB | Fast, portable, 60% smaller |
+| **SQLite** (alternative) | ~400 MB | ~2.4 MB | ~20 KB | ~300 KB | Standard, queryable |
+| **JSON** (intermediate) | 305 MB | 1.4 MB | 8 KB | 196 KB | Human-readable, too large |
+
+#### Use Cases
+
+- **FurlanSpellChecker Integration**: Export to msgpack for Python implementation
+- **Research & Analysis**: Export to SQLite for SQL queries and data exploration  
+- **Third-Party Applications**: Use JSON/msgpack for cross-language integration
+- **Backup & Archival**: Create portable copies without BerkeleyDB dependency
+
+**Documentation**: See [`database_export/README.md`](database_export/README.md) for complete usage, verification, and troubleshooting.
 
 ## Testing Framework
 

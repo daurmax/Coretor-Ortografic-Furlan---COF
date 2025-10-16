@@ -8,6 +8,9 @@
 # Temporary output files
 temp/
 
+# Database export output
+database_export/output/
+
 # Perl build files
 Makefile
 Makefile.old
