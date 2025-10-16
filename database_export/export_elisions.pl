@@ -57,7 +57,8 @@ print "\nWriting JSON to $output_json...\n";
 open(my $fh, '>:utf8', $output_json) 
     or die "Cannot write to $output_json: $!\n";
 
-my $json = JSON::PP->new->utf8->pretty->canonical;
+# Don't use ->utf8 flag when filehandle is already :utf8
+my $json = JSON::PP->new->pretty->canonical;
 print $fh $json->encode(\@elision_words);
 close $fh;
 

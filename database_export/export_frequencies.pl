@@ -32,6 +32,7 @@ tie(my %frec, "DB_File", $frec_db, O_RDONLY, 0666)
     or die("Cannot open '$frec_db': $!\n");
 
 my $dbh = tied %frec;
+# Keys are already UTF-8 encoded in the database
 # Use UTF-8 decoding for keys (as per COF/lib/COF/Data.pm line 82)
 $dbh->filter_fetch_key( sub { utf8::decode($_) } );
 $dbh->filter_store_key( sub { utf8::encode($_) } );
@@ -62,7 +63,8 @@ print "\nWriting JSON to $output_json...\n";
 open(my $fh, '>:utf8', $output_json) 
     or die "Cannot write to $output_json: $!\n";
 
-my $json = JSON::PP->new->utf8->pretty->canonical;
+# Don't use ->utf8 flag when filehandle is already :utf8
+my $json = JSON::PP->new->pretty->canonical;
 print $fh $json->encode(\%frequencies);
 close $fh;
 

@@ -43,7 +43,8 @@ untie %words;
 
 # Write JSON
 print "\nWriting JSON to $output_path...\n";
-my $json = JSON::PP->new->utf8->pretty->canonical->encode(\%export);
+# Don't use ->utf8 flag when filehandle is already :utf8
+my $json = JSON::PP->new->pretty->canonical->encode(\%export);
 open(my $fh, ">:utf8", $output_path) or die "Cannot write to $output_path: $!\n";
 print $fh $json;
 close($fh);
