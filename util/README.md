@@ -59,6 +59,17 @@ COF database inspection and diagnostic utility.
 - `--sample N` - Show N sample entries per database (default: 20)
 - `--help` - Display full documentation
 
+### `word_lookup_utils.pl`
+Word lookup and metadata inspection utility for debugging ranking differences.
+- `--word WORD` - Look up a single word with detailed metadata
+- `--batch FILE` - Look up multiple words from file (one per line)
+- `--suggest` - Include suggestions for the word
+- `--phonetic` - Include phonetic code
+- `--similar` - Include similar words (edit distance 1-2)
+- `--json` - Output in JSON format for scripting
+- `--verbose` - Show all available metadata
+- `--help` - Display full documentation
+
 ### `nondeterminism_utils.pl`
 Non-deterministic suggestion ordering detection utility.
 - `--iterations N` - Number of iterations per word (default: 20)
@@ -142,6 +153,24 @@ perl util/database_utils.pl --frequency --show-top 20
 
 # Show 50 sample entries per database
 perl util/database_utils.pl --sample 50
+```
+
+### Word Lookup and Metadata Inspection
+```bash
+# Basic word lookup
+perl util/word_lookup_utils.pl --word Cjas
+
+# Detailed lookup with suggestions and phonetic
+perl util/word_lookup_utils.pl --word cjasa --suggest --phonetic
+
+# Check multiple words from file
+perl util/word_lookup_utils.pl --batch words_to_check.txt
+
+# Full metadata with similar words
+perl util/word_lookup_utils.pl --word furla --verbose --similar
+
+# JSON output for scripting/comparison
+perl util/word_lookup_utils.pl --word cjase --json
 ```
 
 ### Non-Determinism Detection
