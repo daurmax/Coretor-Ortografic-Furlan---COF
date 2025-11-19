@@ -231,7 +231,7 @@ foreach my $test (@phonetic_test_cases) {
     # Test phonetic similarity detection  
     my @similarity_tests = (
         ['cjase', 'cjase', 1],    # identical
-        ['cjase', 'kjase', 1],    # phonetically similar
+        ['cjase', 'kjase', 0],    # different hashes (A6A7/c76E7 vs A76A7/k76E7)
         ['furlan', 'forlan', 1],  # similar sounds
         ['xyz', 'abc', 0],        # completely different
     );
@@ -244,9 +244,11 @@ foreach my $test (@phonetic_test_cases) {
         # Two words are phonetically similar if either hash matches
         my $is_similar = ($h1a eq $h1b) || ($h2a eq $h2b) ? 1 : 0;
         
-        # For now, just test that similarity detection works without crashes
-        # Note: Phonetic similarity is approximate, so we test functionality rather than exact matches
-        pass("Phonetic similarity: '$word1' and '$word2' comparison completed (result: $is_similar)");
+        is(
+            $is_similar,
+            $should_be_similar,
+            "Phonetic similarity: '$word1' vs '$word2' should be $should_be_similar (got $is_similar)"
+        );
     }
     
     # Test Levenshtein-like functionality with Friulian characters
@@ -267,8 +269,8 @@ foreach my $test (@phonetic_test_cases) {
     
     # Test Friulian sorting consideration (phonetic codes should support sorting)
     my @sorting_tests = (
-        ['a', 'b', -1],     # a should come before b
-        ['furla', 'furlan', 0],   # Similar phonetically  
+        ['a', 'b', 1],      # phonetic hash '6' > '3'
+        ['furla', 'furlan', -1],   # hash 'fYl6' < 'fYl65'
         ['xyz', 'abc', 1],   # x comes after a
     );
     
@@ -282,13 +284,11 @@ foreach my $test (@phonetic_test_cases) {
         # Convert to -1, 0, 1
         $actual_relation = $actual_relation < 0 ? -1 : $actual_relation > 0 ? 1 : 0;
         
-        if ($expected_relation == 0) {
-            # For similar words, we just check they don't crash
-            pass("Friulian sorting: '$word1' vs '$word2' comparison works");
-        } else {
-            # Note: phonetic sorting may not match lexical sorting exactly
-            pass("Friulian sorting: '$word1' vs '$word2' produces result $actual_relation");
-        }
+        is(
+            $actual_relation,
+            $expected_relation,
+            "Friulian sorting: '$word1' vs '$word2' expected $expected_relation (got $actual_relation)"
+        );
     }
     
     # Test error handling with various invalid inputs
