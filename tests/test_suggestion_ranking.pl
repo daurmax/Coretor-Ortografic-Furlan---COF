@@ -195,16 +195,29 @@ for my $word (sort keys %SUGGESTION_ORDER_TEST_CASES) {
     # If a word is in the errors dictionary, its correction should rank first
     # This tests the F_ERRS priority (weight 300)
     
-    # Note: This requires having test data in errors.db
-    # For now, we document the expected behavior
-    pass("Error dictionary ranking test (requires test data setup)");
+    # Test with known error from system error database
+    my $error_word = 'adincuatri';
+    my @suggestions = get_suggestions_ordered($error_word);
+    
+    ok(@suggestions > 0, "Error dictionary word '$error_word' produces suggestions");
+    if (@suggestions > 0) {
+        # The correction 'ad in cuatri' should rank first
+        is(lc($suggestions[0]), 'ad in cuatri',
+           "Error dictionary correction ranks first (F_ERRS=300)");
+    }
 }
 
 # Test 11: User dictionary suggestions
 {
     # User dictionary words should have F_USER_DICT weight (350)
     # Higher than system words but lower than error corrections
-    pass("User dictionary ranking test (requires test data setup)");
+    
+    # NOTE: This test requires user dictionary to be loaded
+    # See test_user_databases.pl for comprehensive user dictionary testing
+    # Including: F_USER_DICT priority (350), F_USER_EXC priority (1000),
+    # and complete priority hierarchy verification
+    
+    pass("User dictionary ranking test (see test_user_databases.pl for full coverage)");
 }
 
 # Test 12: Frequency-based ranking
