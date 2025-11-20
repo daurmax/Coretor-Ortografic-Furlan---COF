@@ -207,19 +207,6 @@ for my $word (sort keys %SUGGESTION_ORDER_TEST_CASES) {
     }
 }
 
-# Test 11: User dictionary suggestions
-{
-    # User dictionary words should have F_USER_DICT weight (350)
-    # Higher than system words but lower than error corrections
-    
-    # NOTE: This test requires user dictionary to be loaded
-    # See test_user_databases.pl for comprehensive user dictionary testing
-    # Including: F_USER_DICT priority (350), F_USER_EXC priority (1000),
-    # and complete priority hierarchy verification
-    
-    pass("User dictionary ranking test (see test_user_databases.pl for full coverage)");
-}
-
 # Test 12: Frequency-based ranking
 {
     # More frequent words should rank higher (when other factors equal)
@@ -259,17 +246,6 @@ for my $word (sort keys %SUGGESTION_ORDER_TEST_CASES) {
         like($suggestions_title[0], qr/^[A-Z][a-z]/, "Title case input produces title case suggestions");
         pass("Case preservation verified");
     }
-}
-
-# Test 15: Friulian alphabetical ordering (tie-breaker)
-{
-    # When multiple suggestions have same weight and distance,
-    # they should be ordered alphabetically using Friulian sort
-    
-    # The sort_friulian function handles special Friulian characters
-    # Testing this requires words with identical ranking but different order
-    
-    pass("Friulian alphabetical ordering test (documented behavior)");
 }
 
 # === Performance and Consistency Tests ===
